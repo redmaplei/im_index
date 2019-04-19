@@ -2,41 +2,133 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>-001</title>
-    <link rel="icon" href="/img/TIM截图20190121225434.png" >
-    <script type="text/javascript" src="js/framework/vue.js"></script>
-    <link rel="stylesheet" type="text/css" href="/layui/css/layui.css">
-    <link rel="stylesheet" type="text/css" href="../css/read/main.css">
-    <script type="text/javascript" src="/js/framework/jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="/js/read/commons.js"></script>
+    <title>-001 login</title>
+
+
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/bootstrap.css">
+
+    <link rel="stylesheet" href="css/login.css">
+
+    <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript" src="../js/vue-resource.min.js"></script>
+    <script type="text/javascript" src="../js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="../js-plugs/md5.js"></script>
+
+
 
 </head>
 <body>
-    
-    <div class="header">
-          <h1 class="logo">
-            <a href="index.html">
-              <span >-001</span>
-            </a>
-          </h1>
-          <div class="nav">
-            <a href="/index.html" class="active">首页</a>
-            <a href="/html/article.html">文章</a>
-            <a href="/html/archive.html">归档</a>
-            <a href="/html/about.html">关于</a>
-          </div>
-          <ul class="layui-nav header-down-nav">
-            <li class="layui-nav-item"><a href="/index.html" class="active">首页</a></li>
-            <li class="layui-nav-item"><a href="/html/article.html" >文章</a></li>
-            <li class="layui-nav-item"><a href="/html/archive.html">归档</a></li>
-            <li class="layui-nav-item"><a href="/html/about.html">关于</a></li>
-          </ul>
+
+    <div id="login">
+
+        <div id="login-head">
+            <h3> -001 manage <small style="color: #ffffff;">&nbsp;&nbsp;</small></h3>
+        </div>
+
+        <div id="username-input" class="input-group">
+            <span class="input-group-addon" id="login-username">账号</span>
+            <input type="text" v-model="usr" class="form-control" placeholder="username" aria-describedby="basic-addon1">
+        </div>
+
+        <div id="password-input" class="input-group">
+            <span class="input-group-addon" id="login-password">密码</span>
+            <input type="password" v-model="passwd" class="form-control" placeholder="password" aria-describedby="basic-addon1">
+        </div>
+
+
+        <div id="login-tip">
+            <span>
+                {{ tip }}
+            </span>
+        </div>
+
+        <button id="login-button" v-on:click="login">
+            登录
+        </button>
 
     </div>
 
+    <script>
     
+    var loginvue = new Vue({
 
-   
+        el:'#login',
+        data:{
+            usr:"",
+            passwd:"",
+            tip:"",
+        },
+        methods: {
+            
+            // 现在用md5加密
+            login: function() {
+                
+                // var urlread = "localhost:8080/user/login";
+
+                console.log(hex_md5("123456"));
+
+                window.location.href = "admin.html";
+                if (loginvue.usr == "" || loginvue.passwd == "") {
+                    loginvue.tip = "请输入完整";
+                    return;
+                }
+
+            //    Vue.$http.get('http://139.199.89.116:8080/user/login',{
+            //         params: {
+            //             usr: loginvue.usr,
+            //             passwd: loginvue.passwd
+            //             },
+            //         },{
+            //         emulateJSON: true
+            //         }
+            //         ).then(function(res){
+            //             console.log(res);
+            //     });
+
+                var urlread = "http://139.199.89.116:8080/user/login?usr="+loginvue.usr+"&passwd="+loginvue.passwd;
+                var urls = "http://139.199.89.116:8080/md/getnewmd";
+                $.ajax({
+                    url:urls,
+                    type:'GET',
+                    dataType:'json',
+                    // data: { usr:loginvue.usr, passwd:loginvue.passwd },
+                    contentType:'application/json; charset=UTF-8',
+                    success:function (data) {
+                        console.log(data);
+                        window.location.href = "admin.html";
+                    },
+                    error: function() {
+                        console.log("xx");
+                    }
+
+                });
+
+                // $.ajax({
+                //     url:urlread,
+                //     type:'GET',
+                //     dataType:'json',
+                //     data: { usr:loginvue.usr, passwd:loginvue.passwd },
+                //     contentType:'application/json; charset=UTF-8',
+                //     success:function (data) {
+                //         console.log(data)
+                //     },
+                //     error: function() {
+                //         console.log("xsss");
+                //     }
+
+                // });
+                
+
+                
+
+            }
+        }
+    });
+
+    </script>
+
 
 </body>
 </html>

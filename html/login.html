@@ -4,9 +4,132 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>客服聊天登录</title>
+
+
+    <link rel="stylesheet" href="../css/framework/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/framework/bootstrap.css">
+
+    <link rel="stylesheet" href="../css/im_index/login.css">
+    <link href="../css/framework/layui.css" type="text/css" rel="stylesheet">
+
+    <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript" src="../js/vue-resource.min.js"></script>
+    <script type="text/javascript" src="../js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="../js-plugs/md5.js"></script>
+
+
 </head>
 <body>
     
+
+    <div id="login">
+
+        <div class="c">
+                
+            <div id="login-head">
+                <h3> 即时聊天 <small style="color: #ffffff;">&nbsp;&nbsp;</small></h3>
+            </div>
+
+            <div id="username-input" class="input-group">
+                <span class="input-group-addon" id="login-username">账号</span>
+                <input type="text" v-model="usr" class="form-control" placeholder="username" aria-describedby="basic-addon1">
+            </div>
+
+            <div id="password-input" class="input-group">
+                <span class="input-group-addon" id="login-password">密码</span>
+                <input type="password" v-model="passwd" class="form-control" placeholder="password" aria-describedby="basic-addon1">
+            </div>
+
+            <div class="option">
+
+                <div id="select">
+                    <select>
+                        <option value="">角色</option>
+                        <option value="user">用户</option>
+                        <option value="service">客服</option>
+                    </select>
+                </div>
+                
+                <div class="forgin-passwd">
+
+                    <a class="aaa">
+                        忘记密码？
+                    </a>
+                </div>
+
+                
+            </div>
+
+            <button id="login-button" class="layui-btn" v-on:click="login">
+                登录
+            </button>
+            <br>
+            
+            <button id="register-button" class="layui-btn layui-btn-primary" v-on:click="register">
+                注册
+            </button>
+
+        </div>
+        <!-- <div id="login-tip">
+            <span>
+                {{ tip }}
+            </span>
+        </div> -->
+    </div>
+
+    <script>
+    
+    var loginvue = new Vue({
+
+        el:'#login',
+        data:{
+            usr:"",
+            passwd:"",
+            tip:"",
+        },
+        methods: {
+            
+            // 现在用md5加密
+            login: function() {
+                
+                // var urlread = "localhost:8080/user/login";
+
+                console.log(hex_md5("123456"));
+
+                window.location.href = "admin.html";
+                if (loginvue.usr == "" || loginvue.passwd == "") {
+                    loginvue.tip = "请输入完整";
+                    return;
+                }
+
+                var urlread = "http://139.199.89.116:8080/user/login?usr="+loginvue.usr+"&passwd="+loginvue.passwd;
+                var urls = "http://139.199.89.116:8080/md/getnewmd";
+                $.ajax({
+                    url:urls,
+                    type:'GET',
+                    dataType:'json',
+                    // data: { usr:loginvue.usr, passwd:loginvue.passwd },
+                    contentType:'application/json; charset=UTF-8',
+                    success:function (data) {
+                        console.log(data);
+                        window.location.href = "admin.html";
+                    },
+                    error: function() {
+                        console.log("xx");
+                    }
+
+                });
+                
+
+            }
+        }
+    });
+
+    </script>
+
+
+
 </body>
 </html>

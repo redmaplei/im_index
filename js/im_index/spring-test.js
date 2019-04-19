@@ -20,6 +20,7 @@ function connect() {
     var url = "http://127.0.0.1:8080/gs-guide-websocket"
     var socket = new SockJS(url);
     stompClient = Stomp.over(socket);
+    // 开始连接
     stompClient.connect({}, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);

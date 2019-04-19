@@ -1,0 +1,311 @@
+<html class="standard">
+
+<head>
+    <meta charset="utf-8">
+    <title>客服聊天</title>
+    <link href="../css/im_index/boss/c.css" type="text/css" rel="stylesheet">
+    <link href="../css/im_index/boss/main.css" type="text/css" rel="stylesheet">
+    <link href="../css/im_index/boss/prop-mall.css" type="text/css" rel="stylesheet">
+    <link href="../css/framework/layui.css" type="text/css" rel="stylesheet">
+
+    <script src="../js/framework/layui.js"></script>
+    <script src="../js/framework/vue.js"></script>
+
+
+</head>
+
+<body>
+
+    <div id="wrap">
+        <div id="header">
+            <div class="top">
+
+                <ul class="layui-nav">
+                    <div class="top-in">
+
+                        <li class="layui-nav-item home">
+                            <a href="../html/home.html" class="active">首页</a>
+                        </li>
+
+                        <li class="layui-nav-item message">
+                            <a href="../html/chat.html" style="color:#22d7c6">消息<span class="layui-badge">9</span></a>
+                        </li>
+
+                        <li class="layui-nav-item person; width:auto;">
+
+                            <a href="../html/person.html">
+                                <span>
+                                    周星驰
+                                </span>
+                                &nbsp;&nbsp;<img src="/img/e.jpg" class="layui-nav-img"></a>
+                        </li>
+
+
+                </ul>
+
+            </div>
+        </div>
+
+        <div id="main">
+            <div id="container">
+                <div class="chat-container page-container">
+                    <div class="chat-wrap">
+                        <div>
+                            <div class="data-tips" style="display: none;">
+                                <div class="page-loading">
+                                    <div class="spinner"><span class="loader-round"></span>
+                                        <p>正在加载中...</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="chat-user" class="chat-user">
+                                <div class="article">30天内联系人</div>
+                                <!---->
+                                <div id="user-list" class="user-list" style="background-color:	#FAFAFA">
+
+                                    <ul id="general-list">
+                                        <li id="user" class="">
+                                            <div class="figure"><img
+                                                    src="/img/a.jpg">
+                                            </div>
+                                            <div class="text">
+                                                <div class="title"><span class="time">02:51</span>
+                                                    <span class="name">黄丽莉</span>
+                                                    <span class="name" style="font-size:12.5px;color:gray">京东</span>
+                                                </div> 
+                                                <span class="notice-badge" style="display:   ;">10</span>
+                                            </div>
+                                        </li>
+                                        <li id="user" class="">
+                                            <div class="figure"><img
+                                                    src="/img/b.jpg"></div>
+                                            <div class="text">
+                                                <div class="title"><span class="time">03月20日</span>
+                                                    <span class="name">田</span>
+                                                    <span class="name" style="font-size:12.5px;color:gray">天猫</span>
+                                                </div> 
+                                                <span class="notice-badge" style="display: none;">0</span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div id="chat-record" class="chat-record  ">
+                                <!---->
+
+
+                                
+                        <div class="chat-left " style="display:  ; ">
+                                <div class="article">
+                                    <span>小辣椒</span> 
+                                    <span>在线</span>
+                                </div>
+                                <div class="chat-position-bar" style=" ">
+                                    <a href="/job_detail/1ff627012a85a9231Hd52dq5FFA~.html"
+                                        target="_blank">
+                                        <span>京东</span> 
+                                        <span class="bar-position-name">机械师</span>
+                                    </a>
+                                </div>
+
+                                    <div class="chat-message" style=" ">
+                                            <ul class="im-list">
+                                                    <li style="margin-bottom: -25px;" >
+                                                            <div class="message-text">
+                                                                <div class="figure">
+                                                                    <img
+                                                                        src="/img/a.jpg">
+                                                                </div>
+                                                                <div class="text">
+                                                                    <!---->
+                                                                    <div><i class=" "></i>
+                                                                        我想要一份您的附件简历到我的邮箱，您是否同意箱，您是否同意箱，您是否同意箱，您是否同意
+                                                                        
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    <li class=" item-time "><span class=" time">03-28 14:38</span></li>
+                                                    <li class=" " style="margin-bottom: -25px;">
+                                                            <div class=" " style="float:right;">
+                                                                <div class="text" style=""><i class=" "></i>
+                                                                    <p>
+                                                                        <span style="">
+                                                                            希望这间呢？
+                                                                            希望这间呢？1
+                                                                            希望这间呢？23
+                                                                            希望这间呢？4
+                                                                            希望这间呢？5353
+                                                                            希望这间呢？345s
+                                                                            希望这间呢？
+
+                                                                        </span>
+                                                                    </p>
+                                                                </div>
+                                                                <div class="figure">
+                                                                    <!---->
+                                                                    <img src="/img/c.jpg" class="float:right">
+                                                                
+                                                                </div>
+                                                            </div>
+                                                    </li>
+                                                    <li class=" item-time"><span class=" time">03-28 14:38</span></li>
+
+                                                    <li class=" " style="margin-bottom: -25px;">
+                                                            <div class=" " style="float:right;">
+                                                                <div class="text"><i class=" "></i>
+                                                                    <p>
+                                                                        <span>
+                                                                            希望这间呢？
+                                                                            希望这间呢？1
+                                                                        </span>
+                                                                    </p>
+                                                                </div>
+                                                                <div class="figure">
+                                                                    <!---->
+                                                                    <img src="/img/c.jpg" class="float:right">
+                                                                
+                                                                </div>
+                                                            </div>
+                                                    </li>
+                                                    <li class=" item-time"><span class=" time">03-28 14:38</span></li>
+
+                                                    <li class=" " style="margin-bottom: -25px;">
+                                                            <div class=" " style="float:right;">
+                                                                <div class="text"><i class=" "></i>
+                                                                    <p>
+                                                                        <span>
+                                                                            希望这间呢？
+                                                                            希望这间呢？1
+                                                                        </span>
+                                                                    </p>
+                                                                </div>
+                                                                <div class="figure">
+                                                                    <!---->
+                                                                    <img src="/img/c.jpg" class="float:right">
+                                                                
+                                                                </div>
+                                                            </div>
+                                                    </li>
+                                                    <li class=" item-time"><span class=" time">03-28 14:38</span></li>
+
+                                                    <li class=" " style="margin-bottom: -25px;">
+                                                            <div class=" " style="float:right;">
+                                                                <div class="text"><i class=" "></i>
+                                                                    <p>
+                                                                        <span>
+                                                                            希望这间呢？
+                                                                            希望这间呢？1
+                                                                        </span>
+                                                                    </p>
+                                                                </div>
+                                                                <div class="figure">
+                                                                    <!---->
+                                                                    <img src="/img/c.jpg" class="float:right">
+                                                                
+                                                                </div>
+                                                            </div>
+                                                    </li>
+                                                    <li class=" item-time"><span class=" time">03-28 14:38</span></li>
+
+                                                    <li class=" " style="margin-bottom: -25px;">
+                                                            <div class=" " style="float:right;">
+                                                                <div class="text"><i class=" "></i>
+                                                                    <p>
+                                                                        <span>
+                                                                            希望这间呢？
+                                                                            希望这间呢？1
+                                                                        </span>
+                                                                    </p>
+                                                                </div>
+                                                                <div class="figure">
+                                                                    <!---->
+                                                                    <img src="/img/c.jpg" class="float:right">
+                                                                
+                                                                </div>
+                                                            </div>
+                                                    </li>
+                                                    <li class=" item-time"><span class=" time">03-28 14:38</span></li>
+                                            </ul>
+                                    </div>
+                                    <div class="chat-im chat-editor" style="">
+                                    
+                                        
+                                        <div class="control  chat-controls" style="height: 30;">
+                                                <a href="javascript:;"
+                                                class="btn-emotion"><span>表情</span></a> 
+                                        </div>
+
+                                        <!-- <div id="input"  contenteditable="true" class="chat-input" style="height:  60;">
+                                            <textarea style="line-height: 1;width: 100%;height: 100%;">
+
+                                            </textarea>
+
+                                        </div> -->
+                                        <div style="width:100%;height:  56;">
+                                            <textarea style="line-height: 1;width: 100%;height: 100%; resize: none;
+                                            border: 1px solid white;spellcheck:false ;" wrap="soft|hard" ></textarea>
+                                        </div>
+                                        <div class="send" style="margin-top:8px;" >
+                                                <button class="layui-btn layui-btn-sm" style=" float:right;">发送</button>
+                                        </div>
+
+
+                                                 
+
+
+                                    </div>
+                                
+                                </div>
+                                <div class="chat-weclcome" style="display: none;">
+                                    <div class="welcome-tips">
+                                        <p><b>Tips：</b>与您进行过沟通的 Boss 都会在左侧列表中显示</p>
+                                    </div>
+                                </div>
+                                <!---->
+                               
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="https://static.zhipin.com/library/js/lib/jquery-1.12.2.min.js"></script>
+        <script src="https://static.zhipin.com/library/js/lib/mqtt.js"></script>
+        <script src="https://static.zhipin.com/zhipin/v149/web/geek/chat/vendor.js"></script>
+        <script src="https://static.zhipin.com/zhipin/v149/web/geek/chat/app.js"></script>
+        <script type="text/javascript" src="https://static.zhipin.com/zhipin/v149/web/geek/js/propMall.js"></script>
+    <input type="hidden" id="page_key_name" value="cpc_chat">
+
+
+
+    <script>
+          var articleVue = new Vue({
+          el: '#article',
+          data: {
+              articles: [],
+          },
+          methods: {
+              jumpreadmd: function (blogtitle) {
+                  
+                  // 拿到的字符串前面有空格，不懂
+                  // blogtitle = blogtitle.replace(/(^\s*)/g, "");   // 去除前面的空格
+
+                  localStorage.setItem("blogtitle", blogtitle);
+                  window.location.href = "/html/read.html";
+
+              }
+          }
+      });
+        
+    
+    </script>
+
+</body>
+
+</html>

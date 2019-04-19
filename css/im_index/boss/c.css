@@ -1,0 +1,92 @@
+
+
+
+
+#main:after,
+.card-list ul:after,
+.chat-info:after,
+.chat-list li:after,
+.clearfix:after,
+.detail-top:after,
+.history-company:after,
+.sec-content:after,
+.top-inner:after {
+    content: "";
+    display: block;
+    overflow: hidden;
+    visibility: hidden;
+    clear: both
+}
+
+
+#container {
+    position: relative
+}
+
+#container::-webkit-scrollbar {
+    width: 6px
+}
+
+#header {
+    /* width: 500px; */
+    /* height: 60px; */
+}
+
+.layui-nav-item {
+    
+}
+
+.top-in {
+    width: 60%;
+    margin: 0 auto;
+}
+
+.home {
+    float:left;
+    
+    /* margin-left: 10% */
+}
+
+a.active {
+    color: #FF6600;
+}
+
+.message {
+    float: left;
+    margin-left: 100px;
+}
+
+.person {
+    /* width: 100px; */
+    /* height: 60px; */
+    /* float: left; */
+    /* float: right;margin-right: 10% */
+}
+
+/* .name {
+    
+    width: 100px;
+} */
+
+.chat-wrap {
+    position: absolute;
+    top: 19px;
+    bottom: 10px;
+    overflow: hidden;
+    width: 1000px;
+    margin: 0 auto
+}
+
+.page-container ::-webkit-scrollbar {
+    width: 3px
+}
+
+.page-container ::-webkit-scrollbar-thumb {
+    background-color: #ddd
+}
+
+.page-container ::-webkit-scrollbar-thumb:hover {
+    background-color: #ccc
+}
+
+
