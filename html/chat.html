@@ -409,20 +409,34 @@
         });
 
 
+// {
+// 	"token":"sdf",
+// 	"sendId": 1,
+// 	"receiveId": 2
+// }
 
+// {"token":"sdf","sendId": 1,"receiveId": 2}
 
 
         // 聊天模块
         function getWebSocket() {
-            /**
+            jsonStr = new Object();
+            jsonStr.token = "sdf";
+            jsonStr.sendId = 1;
+            jsonStr.receiveId = 2;
+            // var s = JSON.stringify({token: "sad", sendId: 1, receiveId: 2});
+            var s = JSON.stringify(jsonStr);
+            console.log(JSON.stringify({token: "sad", sendId: 1, receiveId: 2}));
+            /**     
              * WebSocket客户端 PS：URL开头表示WebSocket协议 中间是域名端口 结尾是服务端映射地址
              */
-            var webSocket = new WebSocket( /*[[${webSocketUrl}]]*/ 'ws://localhost:8080/chat');
+            var webSocket = new WebSocket( /*[[${webSocketUrl}]]*/ 'ws://localhost:8080/chat/'+jsonStr.token+'/'+jsonStr.sendId+'/'+jsonStr.receiveId);
             /**
              * 当服务端打开连接
              */
             webSocket.onopen = function (event) {
                 console.log('WebSocket打开连接');
+                console.log('初始消息：%c' + event.data, 'color:green');
                 
             };
 
@@ -431,26 +445,10 @@
              */
             webSocket.onmessage = function (event) {
                 console.log('WebSocket收到消息：%c' + event.data, 'color:green');
-                //获取服务端消息
-                var message = JSON.parse(event.data) || {};
-                var $messageContainer = $('.message-container');
-                //喉咙发炎
-                if (message.type === 'SPEAK') {
-                    $messageContainer.append(
-                        '<div class="mdui-card" style="margin: 10px 0;">' +
-                        '<div class="mdui-card-primary">' +
-                        '<div class="mdui-card-content message-content">' + message.username + "：" + message
-                        .msg + '</div>' +
-                        '</div></div>');
-                }
-                $('.chat-num').text(message.onlineCount);
-                //防止刷屏
-                var $cards = $messageContainer.children('.mdui-card:visible').toArray();
-                if ($cards.length > 5) {
-                    $cards.forEach(function (item, index) {
-                        index < $cards.length - 5 && $(item).slideUp('fast');
-                    });
-                }
+                
+                
+
+
             };
 
             /**
@@ -481,9 +479,11 @@
          */
         function sendMsgToServer() {
             console.log(chatmain.serviceId)
-            webSocket.send(JSON.stringify({
-                    jsonStr: $("#sendText").val()
-            }));
+            // JSON.stringify({token: "sdf", sendId: 1, receiveId: 2});
+            webSocket.send(JSON.stringify({token: "sad", sendId: 1, receiveId: 2}));
+            // webSocket.send(JSON.stringify({
+            //         jsonStr: $("#sendText").val()
+            // }));
             $("#sendText").val(null)
 
         }
