@@ -252,20 +252,6 @@
                             </div>
                             <div id="tips" class="tips" style="display: ;">
                                 <p><b>Tips：</b>与您进行过沟通的客服都会在左侧列表中显示</p>
-                                <!-- <div class="welcome-tips">
-                                        
-                                    </div> -->
-                            </div>
-                            <!---->
-
-                            <!-- <div id="test">
-                                    =====
-                                    <button @click=openWindow()>
-                                        sdf
-                                    </button>
-                                </div> -->
-
-
                         </div>
                     </div>
                 </div>
@@ -273,13 +259,6 @@
         </div>
     </div>
     </div>
-    <!-- <script type="text/javascript" src="https://static.zhipin.com/library/js/lib/jquery-1.12.2.min.js"></script>
-        <script src="https://static.zhipin.com/library/js/lib/mqtt.js"></script>
-        <script src="https://static.zhipin.com/zhipin/v149/web/geek/chat/vendor.js"></script>
-        <script src="https://static.zhipin.com/zhipin/v149/web/geek/chat/app.js"></script>
-        <script type="text/javascript" src="https://static.zhipin.com/zhipin/v149/web/geek/js/propMall.js"></script>
-    <input type="hidden" id="page_key_name" value="cpc_chat"> -->
-
 
     <script src="../js/framework/vue.js"></script>
     <script src="../js/framework/layui.js"></script>
@@ -424,9 +403,6 @@
             jsonStr.token = "sdf";
             jsonStr.sendId = 1;
             jsonStr.receiveId = 2;
-            // var s = JSON.stringify({token: "sad", sendId: 1, receiveId: 2});
-            var s = JSON.stringify(jsonStr);
-            console.log(JSON.stringify({token: "sad", sendId: 1, receiveId: 2}));
             /**     
              * WebSocket客户端 PS：URL开头表示WebSocket协议 中间是域名端口 结尾是服务端映射地址
              */
@@ -444,11 +420,9 @@
              * 当服务端发来消息：1.广播消息 2.更新在线人数
              */
             webSocket.onmessage = function (event) {
+                
                 console.log('WebSocket收到消息：%c' + event.data, 'color:green');
                 
-                
-
-
             };
 
             /**

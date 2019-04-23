@@ -1,0 +1,25 @@
+
+
+
+#service-list {
+
+    
+    margin: 80px auto;
+    width: 1000px;
+    height: 600px;
+    /* border: 1px solid red; */
+
+}
+
+
+.service {
+    margin: 20px 0px;
+    height: 100px;
+    text-align:center;
+    /* background-color: aquamarine; */
+}
+
+.service-a {
+    
+    margin-top: 10px;
+}
