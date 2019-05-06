@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>客服聊天注册</title>
+
+
+    <link rel="stylesheet" href="../css/framework/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/framework/bootstrap.css">
+
+    <link rel="stylesheet" href="../css/im_index/login.css">
+    <link href="../css/framework/layui.css" type="text/css" rel="stylesheet">
+
+</head>
+
+<body>
+
+
+    <div id="login">
+
+        <div class="c">
+
+            <div id="login-head">
+                <h3> 客服即时聊天 <small style="color: #ffffff;">&nbsp;&nbsp;</small></h3>
+            </div>
+
+            <div id="username-input" class="input-group">
+                <span class="input-group-addon" id="login-username">账号</span>
+                <input type="text" v-model="account" class="form-control" placeholder="username"
+                    aria-describedby="basic-addon1">
+            </div>
+
+            <div id="password-input" class="input-group">
+                <span class="input-group-addon" id="login-password">密码</span>
+                <input type="password" v-model="password" class="form-control" placeholder="password"
+                    aria-describedby="basic-addon1">
+            </div>
+            <span>
+                {{ tip }}
+            </span>
+            <div class="option">
+
+                <select name="public-choice" v-model="roleSelected" @change="getRoleSelected">
+                    <option :value="role.id" v-for="role in roles">{{role.name}}</option>
+                </select>
+
+                <div class="forgin-passwd">
+                    <a class="aaa">
+                        忘记密码？
+                    </a>
+                </div>
+
+
+            </div>
+
+            <button id="login-button" class="layui-btn" v-on:click="login">
+                登录
+            </button>
+            <br>
+
+            <button id="register-button" class="layui-btn layui-btn-primary" v-on:click="register">
+                注册
+            </button>
+
+        </div>
+    </div>
+
+
+
+    <script src="../js/framework/vue.js"></script>
+    <script src="../js/framework/layui.js"></script>
+    <script src="../js/framework/jquery-3.2.1.min.js"></script>
+    <script src="../js/im_index/commons.js"></script>
+
+
+    <script>
+        var loginvue = new Vue({
+
+            el: '#login',
+            data: {
+                account: "",
+                password: "",
+                role: "",
+                tip: "",
+                roles: [{
+                        id: 'A',
+                        name: '角色'
+                    },
+                    {
+                        id: '1',
+                        name: '用户'
+                    },
+                    {
+                        id: '2',
+                        name: '客服'
+                    },
+                    {
+                        id: '3',
+                        name: '商家'
+                    }
+                ],
+                roleSelected: '',
+
+            },
+            created() {
+                this.roleSelected = this.roles[0].id;
+            },
+
+
+            methods: {
+
+                getRoleSelected() {
+                    // 获取选中角色
+                    // console.log(this.roleSelected)
+                },
+
+                // 登录
+                login: function () {
+                    if (loginvue.account == "" || loginvue.password == "") {
+                        loginvue.tip = "请输入完整!";
+                        return;
+                    }
+                    if (this.roleSelected == 'A') {
+                        loginvue.tip = "还没选择角色!";
+                        return;
+                    }
+
+                    var urlread = "localhost:8080/user/login?role=" + this.roleSelected + "account=" +
+                        loginvue.account + "&password=" +
+                        loginvue.password;
+                    // console.log(this.roleSelected);
+                    // console.log(loginvue.account);
+                    // console.log(loginvue.password);
+                    $.ajax({
+                        url: urlread,
+                        type: 'POST',
+                        dataType: 'json',
+                        // data: { usr:loginvue.usr, passwd:loginvue.passwd },
+                        contentType: 'application/json; charset=UTF-8',
+                        success: function (data) {
+                            console.log(data);
+                            window.location.href = "home.html";
+                        },
+                        error: function () {
+                            loginvue.tip = "服务错误-1"
+                            console.log("xx");
+                        }
+
+                    });
+                },
+
+                register: function () {
+                    if (loginvue.account == "" || loginvue.password == "" || loginvue.nickName == "" || loginvue.phone == "") {
+                        loginvue.tip = "请输入完整!";
+                        return;
+                    }
+
+                    var urlread = "localhost:8080/user/righster?role=" + this.roleSelected + "account=" +
+                        loginvue.account + "&password=" +
+                        loginvue.password;
+                    $.ajax({
+                        url: urlread,
+                        type: 'POST',
+                        dataType: 'json',
+                        contentType: 'application/json; charset=UTF-8',
+                        success: function (data) {
+                            console.log(data);
+                            window.location.href = "home.html";
+                        },
+                        error: function () {
+                            loginvue.tip = "服务错误-1"
+                            console.log("xx");
+                        }
+
+                    });
+
+
+                }
+
+
+            }
+        });
+    </script>
+
+
+
+</body>
+
+</html>

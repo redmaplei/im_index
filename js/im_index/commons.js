@@ -17,10 +17,10 @@ var config = {
 	
 }
 
-
+var tokenv = 1232;
 
 /// ---------------- 功能函数部分 ---------------
-//时间转化格式
+// 时间转化格式
 function getMyDate(str) {
 	var oDate = new Date(str),
 		oYear = oDate.getFullYear(),
@@ -32,3 +32,49 @@ function getMyDate(str) {
 		oTime = oYear + '-' + getzf(oMonth) + '-' + getzf(oDay) + ' ' + getzf(oHour) + ':' + getzf(oMin) + ':' + getzf(oSen); //最后拼接时间  
 	return oTime;
 };
+//补0
+function getzf(num) {
+	if (parseInt(num) < 10) {
+		num = '0' + num;
+	}
+	return num;
+}
+
+// 时间月天
+function getMyDateMD(str) {
+	var oDate = new Date(str),
+		oMonth = oDate.getMonth() + 1,
+		oDay = oDate.getDate(),
+		oTime = getzf(oMonth) + '-' + getzf(oDay); //最后拼接时间  
+	return oTime;
+};
+
+// 获取路径参数 客服id
+function GetQueryString(name) {
+	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+	var r = window.location.search.substr(1).match(reg);
+	if (r != null) return unescape(r[2]);
+	return null;
+}
+
+// 验证是否登录
+function checkLogin() {
+	var uid = sessionStorage.getItem("tokenUid");
+	if(uid == null) {
+		// alert("未登录")
+	}
+}
+
+function test() {
+	alert("sdfs")
+}
+
+function openPage() {
+	
+}
+
+// 页面跳转
+// 用户a->首页
+function userHome() {
+	window.location.href = "home.html";
+}

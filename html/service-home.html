@@ -18,13 +18,13 @@
                 <ul class="layui-nav">
                     <div id="top" class="top-in">
                         <li class="layui-nav-item home">
-                            <a href="../html/home.html" class="active" style="color:#22d7c6">首页</a>
-                           </li>
+                            <a href="../html/service-home.html" class="active" style="color:#22d7c6">首页</a>
+                        </li>
                         <li class="layui-nav-item message">
-                            <a href="../html/chat.html">消息<span class="layui-badge">9</span></a>
+                            <a href="../html/service-chat.html">消息<span class="layui-badge">9</span></a>
                         </li>
                         <li class="layui-nav-item person; width:auto;">
-                            <a href="../html/person.html">
+                            <a href="../html/service-person.html">
                                 <span>
                                     {{nickname}}
                                 </span>
@@ -47,32 +47,9 @@
 
         <div id="service-list">
 
-            <div class="layui-row layui-col-space5  ">
-                <span style="font-size: 20px">客服列表</span>
-                <hr class="layui-bg-green">
-                <div class="layui-col-md4 service" v-for="service in services">
-                    <!-- target="_blank" -->
-                    <!-- <button  @click="openChat($event, service)">===</button> -->
-                    <a class="service-a" @click="openChat($event, service)" target="_blank">
+            <h1>客服即时聊天</h1>
+            <h1>点击消息查看聊天</h1>
 
-                        &nbsp;&nbsp;
-                        <img :src="service.avatarUrl" class="layui-nav-img" style="height:60px;width:60px;">
-                        <span style="font-size: 19px ;color: #009688;">
-                            {{service.shop}}
-                        </span>
-                        <span style="font-size: 19px">
-                            &nbsp;| &nbsp;
-                        </span>
-                        <span style="font-size: 19px">
-                            {{service.serviceName}}
-                        </span>
-                    </a>
-                </div>
-
-
-
-
-            </div>
         </div>
 
     </div>
@@ -93,6 +70,13 @@
             var account = localStorage.getItem("account");
             var aid = localStorage.getItem("aid");
             var role = localStorage.getItem("role");
+
+            // xxxxxxxxx 
+
+            // 个人信息初始化
+            top.nickname = localStorage.getItem("nickname");
+            console.log(top.nickname)
+            top.avatarUrl = localStorage.getItem("avatarUrl");
 
             getServiceList();
 
@@ -115,12 +99,7 @@
                 });
             }
 
-            // 获取消息
-
-
-
         });
-
 
         // 头条个人栏
         var top = new Vue({

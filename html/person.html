@@ -1,128 +1,140 @@
-<html class="standard"><head>
-        <meta charset="utf-8">
-        <title>个人中心</title>
-        <link href="../css/im_index/boss/c.css" type="text/css" rel="stylesheet">
-        <link href="../css/im_index/boss/main.css" type="text/css" rel="stylesheet">
-        <link href="../css/framework/layui.css" type="text/css" rel="stylesheet">
-        <link href="../css/im_index/person.css" type="text/css" rel="stylesheet">
+<html class="standard">
 
-        <script src="../js/framework/layui.js"></script>
-    </head>
-    <body>
+<head>
+    <meta charset="utf-8">
+    <title>个人中心</title>
+    <link href="../css/im_index/ly/c.css" type="text/css" rel="stylesheet">
+    <link href="../css/im_index/ly/main.css" type="text/css" rel="stylesheet">
+    <link href="../css/framework/layui.css" type="text/css" rel="stylesheet">
+    <link href="../css/im_index/person.css" type="text/css" rel="stylesheet">
 
-        <div id="wrap">
-            <div id="header">
-                <div class="top">
-                        
-                    <ul class="layui-nav">
-                        <div class="top-in">
+    <script src="../js/framework/layui.js"></script>
+</head>
 
-                                    
-                                <li class="layui-nav-item home" >
-                                        <a href="../html/home.html" class="active" >首页</a>
-                                    </li>
+<body>
 
-                                    <li class="layui-nav-item message">
-                                        <a href="../html/chat.html">消息<span class="layui-badge">9</span></a>
-                                    </li>
+    <div id="wrap">
+        <div id="header">
+            <div class="top">
+                <ul class="layui-nav">
+                    <div id="top" class="top-in">
+                        <li class="layui-nav-item home">
+                            <a href="../html/home.html" class="active">首页</a>
+                        </li>
+                        <li class="layui-nav-item message">
+                            <a href="../html/chat.html">消息<span class="layui-badge">9</span></a>
+                        </li>
+                        <li class="layui-nav-item person; width:auto;">
+                            <a href="../html/person.html" style="color:#22d7c6">
+                                <span>
+                                    {{nickname}}
+                                </span>
+                                &nbsp;&nbsp;<img :src="avatarUrl" class="layui-nav-img"></a>
+                        </li>
+                        <li class="layui-nav-item">
+                            <a href="../html/home.html" class="active">退出</a>
+                        </li>
 
-                                    <li class="layui-nav-item person; width:auto;">
-                                
-                                        <a href="../html/person.html" style="color:#22d7c6">
-                                        <span >
-                                            周星驰
-                                        </span>
-                                        &nbsp;&nbsp;<img src="/img/e.jpg" class="layui-nav-img"></a>
-                                    </li>
-                                 
-                                
-                    </ul>
+                </ul>
 
-                </div>
-                </div> 
-
-                <div id="service-list">
-                            
-                    <span>修改个人信息</span>
-                    <br>
-                    <br>
-                    <form class="layui-form" action="">
-                            <div class="layui-form-item">
-                              <label class="layui-form-label">昵称</label>
-                              <div class="layui-input-block">
-                                <input type="text" name="title" required  lay-verify="required" placeholder="请输入昵称" autocomplete="off" class="layui-input">
-                              </div>
-                            </div>
-
-                            <div class="layui-form-item">
-                                    <label class="layui-form-label">手机号码</label>
-                                    <div class="layui-input-block">
-                                      <input type="text" name="title" required  lay-verify="required" placeholder="请输入手机号码" autocomplete="off" class="layui-input">
-                                    </div>
-                            </div>
-
-                            <div class="layui-form-item">
-                                    <label class="layui-form-label">收货地址</label>
-                                    <div class="layui-input-block">
-                                      <input type="text" name="title" required  lay-verify="required" placeholder="请输入收货地址" autocomplete="off" class="layui-input">
-                                    </div>
-                            </div>
-                            
-                            <div class="layui-form-item">
-                              <div class="layui-input-block">
-                                <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
-                              </div>
-                            </div>
-                    </form>
-                </div>
-                
             </div>
         </div>
 
-        <script src="../js/framework/vue.js"></script>
-        <script src="../js/framework/layui.js"></script>
-        <script src="../js/framework/jquery-3.2.1.min.js"></script>
+        <div id="service-list">
+            <div id="info">
+                <span style="height:2px">修改个人信息</span>
+                <hr class="layui-bg-green">
+                <br>
+                <br>
+                <form class="layui-form" action="">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">昵称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="title" required lay-verify="required" placeholder="请输入昵称"
+                                autocomplete="off" class="layui-input" v-model="nickname">
+                        </div>
+                    </div>
 
-        <script>
-        
-        var service_list = new Vue({
-            el: '#service-list',
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">手机号码</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="title" required lay-verify="required" placeholder="请输入手机号码"
+                                autocomplete="off" class="layui-input" v-model="phone">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">收货地址</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="title" required lay-verify="required" placeholder="请输入收货地址"
+                                autocomplete="off" class="layui-input" v-model="messreceivingAddressage">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    </div>
+
+    <script src="../js/framework/vue.js"></script>
+    <script src="../js/framework/layui.js"></script>
+    <script src="../js/framework/jquery-3.2.1.min.js"></script>
+    <script src="../js/im_index/commons.js"></script>
+
+    <script>
+        $(function () {
+            console.log(tokenv)
+
+            checkLogin();
+            // 拿到登录的数据
+            var uid = localStorage.getItem("tokenUid");
+            var role = localStorage.getItem("tokenRole");
+            // alert(uid)
+
+            // 验证是否登录
+
+        });
+
+
+        // 头条个人栏
+        var top = new Vue({
+            el: '#top',
             data: {
-                services: [
-                    {
-                        shopId:121,
-                        serviceId: 13,
-                        avatarUrl: "../img/cc.JPG",
-                        serviceName: "田",
-                        shop: "京东"
-                    },
-                    {
-                        shopId:121,
-                        serviceId: 13,
-                        avatarUrl: "../img/cc.JPG",
-                        serviceName: "田2",
-                        shop: "京东"
-                    },
-                    {
-                        shopId:121,
-                        serviceId: 13,
-                        avatarUrl: "../img/cc.JPG",
-                        serviceName: "田",
-                        shop: "盛大1"
-                    }
-                ],
-                message: "aaa",
+                nickname: "ighiuhouhoiz",
+                avatarUrl: "../img/a.JPG"
             },
             methods: {
                 openChat: function (event, user) {
-                    
+
+                },
+            },
+        });
+
+        var info = new Vue({
+            el: '#service-list',
+            data: {
+                nickname: "aaa",
+                phone: "aaa",
+                messreceivingAddressage: "aaa"
+            },
+            methods: {
+                openChat: function (event, user) {
+
                     console.log(234234)
 
                 }
             }
         });
+        
+    </script>
 
+</body>
 
-        </script>
-    
-    </body></html>
+</html>

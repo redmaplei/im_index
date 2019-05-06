@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,123 +15,284 @@
     <link rel="stylesheet" href="../css/im_index/login.css">
     <link href="../css/framework/layui.css" type="text/css" rel="stylesheet">
 
-    <script type="text/javascript" src="../js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../js/vue.js"></script>
-    <script type="text/javascript" src="../js/vue-resource.min.js"></script>
-    <script type="text/javascript" src="../js/jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="../js-plugs/md5.js"></script>
-
-
 </head>
+
 <body>
-    
+
 
     <div id="login">
 
         <div class="c">
-                
+
             <div id="login-head">
-                <h3> 即时聊天 <small style="color: #ffffff;">&nbsp;&nbsp;</small></h3>
+                <h3> 客服即时聊天 <small style="color: #ffffff;">&nbsp;&nbsp;</small></h3>
             </div>
 
             <div id="username-input" class="input-group">
                 <span class="input-group-addon" id="login-username">账号</span>
-                <input type="text" v-model="usr" class="form-control" placeholder="username" aria-describedby="basic-addon1">
+                <input type="text" v-model="account" class="form-control" placeholder="username"
+                    aria-describedby="basic-addon1">
             </div>
 
             <div id="password-input" class="input-group">
                 <span class="input-group-addon" id="login-password">密码</span>
-                <input type="password" v-model="passwd" class="form-control" placeholder="password" aria-describedby="basic-addon1">
+                <input type="password" v-model="password" class="form-control" placeholder="password"
+                    aria-describedby="basic-addon1">
             </div>
-
+            <span>
+                {{ tip }}
+            </span>
             <div class="option">
 
-                <div id="select">
-                    <select>
-                        <option value="">角色</option>
-                        <option value="user">用户</option>
-                        <option value="service">客服</option>
-                    </select>
-                </div>
-                
-                <div class="forgin-passwd">
+                <select name="public-choice" v-model="roleSelected" @change="getRoleSelected">
+                    <option :value="role.id" v-for="role in roles">{{role.name}}</option>
+                </select>
 
+                <div class="forgin-passwd">
                     <a class="aaa">
                         忘记密码？
                     </a>
                 </div>
 
-                
+
             </div>
 
             <button id="login-button" class="layui-btn" v-on:click="login">
                 登录
             </button>
             <br>
-            
+
             <button id="register-button" class="layui-btn layui-btn-primary" v-on:click="register">
                 注册
             </button>
 
+
+
+            <!-- <div id="login-box">
+                <h1>Spring Security 自定义登录页面</h1>
+                <div class="error" th:class="${error}? 'show error' : 'hide'" th:text="${error}"></div>
+                <div class="msg" th:class="${msg}? 'show msg' : 'hide'" th:text="${msg}"></div>
+                <form name='loginForm' action="http://localhost:8080/se/user/login" method='POST'>
+                    <table>
+                        <tr>
+                            <td>用户名:</td>
+                            <td><input type='text' name='username' /></td>
+                        </tr>
+                        <tr>
+                            <td>密码:</td>
+                            <td><input type='password' name='password' /></td>
+                        </tr>
+                        <tr>
+                            <td colspan='2'>
+                                <input type="submit" value="提交" />
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div> -->
+
+
+                    <!-- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" /> -->
+      
+
+
         </div>
-        <!-- <div id="login-tip">
-            <span>
-                {{ tip }}
-            </span>
-        </div> -->
     </div>
 
+
+    <script src="../js/framework/vue.js"></script>
+    <script src="../js/framework/layui.js"></script>
+    <script src="../js/framework/jquery-3.2.1.min.js"></script>
+    <script src="../js/im_index/commons.js"></script>
+
+
     <script>
-    
-    var loginvue = new Vue({
+        
 
-        el:'#login',
-        data:{
-            usr:"",
-            passwd:"",
-            tip:"",
-        },
-        methods: {
+        
+        $(function () {
+
+
+
+
+
+            // alert(tokenv);
+            // alert(localStorage.getItem("tokenUid"));
             
-            // 现在用md5加密
-            login: function() {
-                
-                // var urlread = "localhost:8080/user/login";
+            checkLogin();
+            // 拿到登录的数据
+            // var uid = sessionStorage.getItem("tokenUid");
+            // var role = sessionStorage.getItem("tokenRole");
+            var uid = localStorage.getItem("tokenUid");
+            var role = localStorage.getItem("tokenRole");
+            // alert(uid)
 
-                console.log(hex_md5("123456"));
+            // 验证是否登录
 
-                window.location.href = "admin.html";
-                if (loginvue.usr == "" || loginvue.passwd == "") {
-                    loginvue.tip = "请输入完整";
-                    return;
-                }
-
-                var urlread = "http://139.199.89.116:8080/user/login?usr="+loginvue.usr+"&passwd="+loginvue.passwd;
-                var urls = "http://139.199.89.116:8080/md/getnewmd";
-                $.ajax({
-                    url:urls,
-                    type:'GET',
-                    dataType:'json',
-                    // data: { usr:loginvue.usr, passwd:loginvue.passwd },
-                    contentType:'application/json; charset=UTF-8',
-                    success:function (data) {
-                        console.log(data);
-                        window.location.href = "admin.html";
-                    },
-                    error: function() {
-                        console.log("xx");
-                    }
-
-                });
-                
+            // 获取客服列表
+            function getServiceList() {
 
             }
-        }
-    });
 
+            // 获取消息
+
+
+
+        });
+
+        var loginvue = new Vue({
+
+            el: '#login',
+            data: {
+                account: "",
+                password: "",
+                role: "",
+                tip: "",
+                roles: [{
+                        id: 'A',
+                        name: '角色'
+                    },
+                    {
+                        id: '1',
+                        name: '用户'
+                    },
+                    {
+                        id: '2',
+                        name: '客服'
+                    },
+                    {
+                        id: '3',
+                        name: '商家'
+                    }
+                ],
+                roleSelected: '',
+
+            },
+            created() {
+                this.roleSelected = this.roles[0].id;
+            },
+
+
+            methods: {
+
+                getRoleSelected() {
+                    // 获取选中角色
+                    // console.log(this.roleSelected)
+                },
+
+                // 登录
+                login: function () {
+                    
+                    if (loginvue.account == "" || loginvue.password == "") {
+                        loginvue.tip = "请输入完整!";
+                        return;
+                    }
+                    var urlread = "http://localhost:8080/user/login?account=" +
+                        loginvue.account + "&password=" +
+                        loginvue.password;
+
+                    var a = "http://127.0.0.1:8080/service/list?account=a";
+
+                    // $.post(urlread, function(data, status){
+                    //     console.log(data)
+                    // });
+
+                    $.ajax({
+                    //     xhrFields: {
+           			// 	withCredentials: true
+       				// },
+					
+                        url:urlread,
+                        type : "post", 
+                        dataType: 'json',
+                        contentType:'application/json;charset=UTF-8', //contentType很重要
+                        
+                        crossDomain: true,
+                        beforeSend: function(xhr) { 
+                        xhr.withCredentials = true; 
+                        },
+                        success : function(rel) {
+                            if(rel.code != 0) {
+                                loginvue.tip = rel.msg;
+                            }
+                            else {
+                                loginvue.tip = rel.msg;
+                                console.log(rel)
+                                localStorage.setItem("account",loginvue.account);
+                                localStorage.setItem("aid",rel.data.aid);
+                                localStorage.setItem("role",rel.data.role);
+                                localStorage.setItem("avatarUrl",rel.data.avatarUrl);
+                                localStorage.setItem("nickname",rel.data.nickname);
+                                // 0是用户
+                                if(rel.data.role == 0) {
+                                    window.location.href = "home.html";
+                                }
+                                // 1是客服
+                                if(rel.data.role == 1) {
+                                    window.location.href = "home.html";
+                                }
+                                // 2是店主
+                                if(rel.data.role == 2) {
+                                    window.location.href = "home.html";
+                                }
+                                // 3是管理员
+                                if(rel.data.role == 3) {
+                                    window.location.href = "home.html";
+                                }
+                                // window.location.href = "home.html";
+                            }
+                        },
+                        error: function (rel) {
+                            loginvue.tip = "服务器错误-1";
+                            console.log("xx");
+                        }
+                    });
+
+
+
+                },
+
+                // 注册
+                register: function () {
+                    
+                    var urlread = "http://localhost:8080/se/user/login"
+                    var data = {
+                        "username": "a",
+                        "password":"a"
+                        };
+                    $.post(urlread,data, function(data, status){
+                        console.log(data)
+                    });
+
+
+
+                    // $.ajax({
+                    //     // useDefaultXhrHeader: false,
+                    //     type:"post",
+                    //     url:"http://127.0.0.1:8080/se/user/login",
+                    //     data:{"username": loginvue.account,
+                    //         "password":loginvue.password,
+                    //     dataType:'json',
+                    //     success:function (result) {
+                    //         console.log(result);
+                            
+                    //     },
+                    //     error:function () {
+                    //         console.log("error");
+                    //     }
+                    //     }
+                    // });
+
+
+                }
+
+
+            }
+        });
     </script>
 
 
 
 </body>
+
 </html>
