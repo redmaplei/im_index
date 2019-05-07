@@ -12,60 +12,37 @@
         <div id="wrap">
             <div id="header">
                 <div class="top">
-                        
                     <ul class="layui-nav">
-                        <div class="top-in">
-
-                                    
+                        <div id="top" class="top-in">
                                 <li class="layui-nav-item home" >
                                         <a href="../html/home.html" class="active"  style="color:#22d7c6">首页</a>
                                     </li>
-
-                                    <li class="layui-nav-item message">
-                                        <a href="../html/chat.html">消息<span class="layui-badge">9</span></a>
-                                    </li>
-
                                     <li class="layui-nav-item person; width:auto;">
-                                
-                                        <a href="../html/person.html">
-                                        <span >
-                                            周星驰
-                                        </span>
-                                        &nbsp;&nbsp;<img src="/img/e.jpg" class="layui-nav-img"></a>
-                                        <dl class="layui-nav-child">
-                                            <dd><a href="javascript:;">修改信息</a></dd>
-                                            <dd><a href="javascript:;">安全管理</a></dd>
-                                            <dd><a href="javascript:;">退了</a></dd>
-                                          </dl>
+                                            <span>
+                                                {{nickname}}
+                                            </span>
                                     </li>
-                                
                                     <li class="layui-nav-item">
                                         <a href="../html/home.html" class="active">退出</a>
                                     </li>
                     </ul>
-
-                   
-
-                </div>
+                   </div>
                 </div> 
-                
-                    <div id="service-list">
-                            
-                        <div class="layui-row layui-col-space5  " >
-                            <span style="font-size: 20px">客服列表</span>
+                    <div id="service-list">     
+                        <div id="sadmin" class="layui-row layui-col-space5  " >
+                            <span style="font-size: 20px">客服管理</span>
                             <hr class="layui-bg-green">
                             <div class="add">
                                 <div class="add_input">
-                                    <span class="service_tip">客服id</span>
-                                    <input class="addInput">
-                                    <button class="layui-btn addBtn" onclick="openAdd()">添加</button>
+                                    <span class="service_tip">客服名字</span>
+                                    <input class="addInput"  v-model="serviceName">
+                                    <button class="layui-btn addBtn" @click="add()">添加</button>
                                 </div>
                                 <br>
                                 <br>
                                 <br>
                                 <div class="tip_div">
-
-                                        <p class="tip_p" text- align:center>没有这名客服！</p> 
+                                        <p class="tip_p" text- align:center>{{tip}}</p> 
                                 </div>
                             </div>
                             <table class="layui-table">
@@ -81,15 +58,10 @@
                                     <th>操作</th>
                                   </tr> 
                                 </thead>
-                                <tbody>
+                                <tbody v-for="serviceName in serviceNames">
                                   <tr>
-                                    <td>田1</td>
-                                    <td><button class="layui-btn layui-btn-sm">移除</button></td>
-                                  </tr>
-                                  <tr>
-                                    <td>田23</td>
-                                    <td><button class="layui-btn layui-btn-sm">移除</button></td> 
-                                    
+                                    <td>{{serviceName}}</td>
+                                    <td><button class="layui-btn layui-btn-sm" @click="remove(serviceName)" >移除</button></td>
                                   </tr>
 
                                 </tbody>
@@ -115,69 +87,83 @@
  
         <script> 
 
-        var service_list = new Vue({
-            el: '#service-list',
+        checkLogin()
+        
+        var aid = localStorage.getItem("aid");
+
+        $(function () {
+
+            // 获取客服列表
+            getServiceNames(aid)
+
+        });
+
+        function getServiceNames(aid) {
+            var getServiceNames = "http://localhost:8080/service/serviceNames?aid=" + aid;
+                    $.get(getServiceNames,  function (result) {
+                        console.log(result)
+                        sadmin.serviceNames = result.data;
+                    });
+        }
+
+        // 头条个人栏
+        var top = new Vue({
+            el: '#top',
             data: {
-                services: [
-                    {
-                        shopId:121,
-                        serviceId: 13,
-                        avatarUrl: "../img/cc.JPG",
-                        serviceName: "田",
-                        shop: "京东"
-                    },
-                    {
-                        shopId:121,
-                        serviceId: 13,
-                        avatarUrl: "../img/cc.JPG",
-                        serviceName: "田2",
-                        shop: "京东"
-                    },
-                    {
-                        shopId:121,
-                        serviceId: 13,
-                        avatarUrl: "../img/cc.JPG",
-                        serviceName: "田",
-                        shop: "盛大1"
-                    },
-                    {
-                        shopId:121,
-                        serviceId: 13,
-                        avatarUrl: "../img/cc.JPG",
-                        serviceName: "田",
-                        shop: "盛大1"
-                    }
-                ],
-                message: "aaa",
+                nickname: "ighiuhouhoiz",
+                aid: ""
             },
             methods: {
                 openChat: function (event, user) {
-                    s = sessionStorage.getItem("tokenUid");
-                    
-                    console.log(s)
-                    console.log(user.serviceId)
-                    
-                    // window.location.href = "im.html";
-                    window.location.href = "chat.html?serviceId=" + user.serviceId;
-
-                }
-            }
+                  
+                },
+            },
         });
 
+        var sadmin = new Vue({
+            el: '#sadmin',
+            data: {
+                serviceName: "",
+                serviceNames:[
+                "sd",
+                "sdf"
+                ],
+                tip:""
+            },
+            methods: {
 
-        function openAdd() {
-            // alert(123)
-            layer.msg('hello');
-            layer.open({
-                type: 1,
-                area: ['600px', '360px'],
-                shadeClose: true, //点击遮罩关闭
-                content: '\<\div style="padding:20px;">自定义内容\<\/div>'
-              });
+                add: function () {
+                    console.log(aid + "&&serviceName=" + this.serviceName)
+                    var add = "http://localhost:8080/user/addService?shopId=" + aid + "&&serviceName=" + this.serviceName;
+                    $.post(add,  function (result) {
+                        sadmin.tip = result.msg;
+                        if(result.code == 0) {
+                            alert("增加成功")
+                        }
+                        else {
+                            alert(result.msg)
+                        }			
+                    });
 
+                },
 
-        }
-        
+                remove: function (serviceName) {
+                    var remove = "http://localhost:8080/user/removeService?shopId=" + aid + "&&serviceName=" + serviceName;
+                    $.post(remove,  function (result) {
+                        sadmin.tip = result.msg;
+                        if(result.code == 0) {
+                            alert("移除成功")
+                            getServiceNames(aid)
+                        }
+                        else {
+                            alert(result.msg)
+                        }			
+                    });
+
+                },               
+
+            }
+        });
 
         </script>
 

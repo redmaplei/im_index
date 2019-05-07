@@ -59,9 +59,12 @@ function GetQueryString(name) {
 
 // 验证是否登录
 function checkLogin() {
-	var uid = sessionStorage.getItem("tokenUid");
-	if(uid == null) {
-		// alert("未登录")
+	// localStorage.clear();
+	var aid = localStorage.getItem("aid");
+	// alert(aid)
+	if(aid == null) {
+		alert("未登录")
+		window.location.href = "login.html";
 	}
 }
 

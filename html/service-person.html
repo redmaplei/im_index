@@ -34,6 +34,7 @@
                         <li class="layui-nav-item">
                             <a href="../html/home.html" class="active">退出</a>
                         </li>
+                    </div>
                 </ul>
 
             </div>
@@ -46,25 +47,18 @@
                 <br>
                 <br>
                 <form class="layui-form" action="">
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">昵称</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="title" required lay-verify="required" placeholder="请输入昵称"
-                                autocomplete="off" class="layui-input" v-model="nickname">
-                        </div>
-                    </div>
 
                     <div class="layui-form-item">
                         <label class="layui-form-label">手机号码</label>
                         <div class="layui-input-block">
                             <input type="text" name="title" required lay-verify="required" placeholder="请输入手机号码"
-                                autocomplete="off" class="layui-input" v-model="nickname">
+                                autocomplete="off" class="layui-input" v-model="phone">
                         </div>
                     </div>
 
                     <div class="layui-form-item">
                         <div class="layui-input-block">
-                            <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                            <button class="layui-btn" lay-submit lay-filter="formDemo" @click="upServiceinfo(nickname)" >立即提交</button>
                         </div>
                     </div>
                 </form>
@@ -81,7 +75,8 @@
 
     <script>
 
-
+        
+        checkLogin()
 
         // 头条个人栏
         var top = new Vue({
@@ -100,15 +95,20 @@
         var info = new Vue({
             el: '#service-list',
             data: {
-                nickname: "aaa",
                 phone: "aaa"
             },
             methods: {
-                openChat: function (event, user) {
-
-                    console.log(234234)
+                upServiceinfo: function (event, user) {
+                    var upServiceinfo = "http://localhost:8080/user/upServiceinfo";
+                    $.post(upServiceinfo, {
+                        "uid" : aid,           
+                        "phone" : this.phone
+                    },   function (result) {
+                        alert(result.msg);		
+                    });
 
                 }
+
             }
         });
 

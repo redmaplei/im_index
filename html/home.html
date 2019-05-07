@@ -21,7 +21,7 @@
                             <a href="../html/home.html" class="active" style="color:#22d7c6">首页</a>
                            </li>
                         <li class="layui-nav-item message">
-                            <a href="../html/chat.html">消息<span class="layui-badge">9</span></a>
+                            <a href="../html/chat.html">消息<span class="layui-badge"></span></a>
                         </li>
                         <li class="layui-nav-item person; width:auto;">
                             <a href="../html/person.html">
@@ -29,11 +29,6 @@
                                     {{nickname}}
                                 </span>
                                 &nbsp;&nbsp;<img  :src="avatarUrl" class="layui-nav-img"></a>
-                            <dl class="layui-nav-child">
-                                <dd><a href="javascript:;">修改信息</a></dd>
-                                <dd><a href="javascript:;">安全管理</a></dd>
-                                <dd><a href="javascript:;">退了</a></dd>
-                            </dl>
                         </li>
                         <li class="layui-nav-item">
                             <a href="../html/home.html" class="active">退出</a>
@@ -86,6 +81,9 @@
     <script src="../js/im_index/commons.js"></script>
 
     <script>
+        
+        checkLogin()
+
         // data loading...
         $(function () {
 
@@ -127,7 +125,7 @@
             el: '#top',
             data: {
                 nickname: "ighiuhouhoiz",
-                avatarUrl: "../img/a.JPG"
+                avatarUrl: "../img/u.JPG"
             },
             methods: {
                 openChat: function (event, user) {
@@ -144,36 +142,37 @@
         var service_list = new Vue({
             el: '#service-list',
             data: {
-                services: [{
-                        shopId: 121,
-                        serviceId: 13,
-                        avatarUrl: "../img/a.JPG",
-                        serviceName: "田",
-                        shop: "京东"
-                    },
-                    {
-                        shopId: 121,
-                        serviceId: 13,
-                        avatarUrl: "../img/b.JPG",
-                        serviceName: "小兰",
-                        shop: "京东"
-                    },
-                    {
-                        shopId: 121,
-                        serviceId: 13,
-                        avatarUrl: "../img/c.JPG",
-                        serviceName: "安捷",
-                        shop: "盛大1"
-                    },
-                    {
-                        shopId: 121,
-                        serviceId: 13,
-                        avatarUrl: "../img/e.JPG",
-                        serviceName: "天",
-                        shop: "盛大1"
-                    }
-                ],
-                message: "aaa",
+                services: [],
+                // services: [{
+                //         shopId: 121,
+                //         serviceId: 13,
+                //         avatarUrl: "../img/a.JPG",
+                //         serviceName: "田",
+                //         shop: "京东"
+                //     },
+                //     {
+                //         shopId: 121,
+                //         serviceId: 13,
+                //         avatarUrl: "../img/b.JPG",
+                //         serviceName: "小兰",
+                //         shop: "京东"
+                //     },
+                //     {
+                //         shopId: 121,
+                //         serviceId: 13,
+                //         avatarUrl: "../img/c.JPG",
+                //         serviceName: "安捷",
+                //         shop: "盛大1"
+                //     },
+                //     {
+                //         shopId: 121,
+                //         serviceId: 13,
+                //         avatarUrl: "../img/e.JPG",
+                //         serviceName: "天",
+                //         shop: "盛大1"
+                //     }
+                // ],
+                // message: "aaa",
             },
             methods: {
                 openChat: function (event, user) {

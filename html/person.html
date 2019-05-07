@@ -34,7 +34,7 @@
                         <li class="layui-nav-item">
                             <a href="../html/home.html" class="active">退出</a>
                         </li>
-
+                    </div>
                 </ul>
 
             </div>
@@ -62,18 +62,10 @@
                                 autocomplete="off" class="layui-input" v-model="phone">
                         </div>
                     </div>
-
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">收货地址</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="title" required lay-verify="required" placeholder="请输入收货地址"
-                                autocomplete="off" class="layui-input" v-model="messreceivingAddressage">
-                        </div>
-                    </div>
-
+                    
                     <div class="layui-form-item">
                         <div class="layui-input-block">
-                            <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                            <button class="layui-btn" lay-submit lay-filter="formDemo" @click="upUserinfo(nickname, phone)" >立即提交</button>
                         </div>
                     </div>
                 </form>
@@ -89,16 +81,12 @@
     <script src="../js/im_index/commons.js"></script>
 
     <script>
+
+        checkLogin()
+        var aid = localStorage.getItem("aid");
+
         $(function () {
-            console.log(tokenv)
-
-            checkLogin();
-            // 拿到登录的数据
-            var uid = localStorage.getItem("tokenUid");
-            var role = localStorage.getItem("tokenRole");
-            // alert(uid)
-
-            // 验证是否登录
+            
 
         });
 
@@ -121,13 +109,18 @@
             el: '#service-list',
             data: {
                 nickname: "aaa",
-                phone: "aaa",
-                messreceivingAddressage: "aaa"
+                phone: "aaa"
             },
             methods: {
-                openChat: function (event, user) {
-
-                    console.log(234234)
+                upUserinfo: function (nickname, phone) {
+                    var upUserinfo = "http://localhost:8080/user/upUserinfo";
+                    $.post(upUserinfo, {
+                        "uid" : aid,      
+                        "nickname" : this.nickname,      
+                        "phone" : this.phone
+                    },   function (result) {
+                        alert(result.msg);		
+                    });
 
                 }
             }

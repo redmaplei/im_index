@@ -146,6 +146,9 @@
 
 
     <script>
+        
+        checkLogin()
+        
         var aid = localStorage.getItem("aid");
         var account = localStorage.getItem("account");
         var role = localStorage.getItem("role");
@@ -153,8 +156,6 @@
         var userAvatarUrl = localStorage.getItem("avatarUrl");
 
         $(function () {
-
-            // alert("账号未登录，请先登录！");
 
             // 从消息过来的
             if (serviceId == null) {
