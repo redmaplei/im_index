@@ -1,23 +1,3 @@
-var domain = {
-	
-	// read: "http://localhost:8080"
-	read: "http://139.199.89.116:8080"
-
-}
-
-var config = {
-	
-	url: {
-		"get_article_new": domain.read + "/article/new", // 获得最新的5篇文章
-		"get_article_update": domain.read + "/article/update", // 获得最新的5篇文章
-		"get_article_category": domain.read + "/article/category", // 获得最近更新的10个分类
-		"get_article_page": domain.read + "/article/page", // 分页获取
-		"get_article_one": domain.read + "/article/get/" // 获取一篇文章
-	}
-	
-}
-
-var tokenv = 1232;
 
 /// ---------------- 功能函数部分 ---------------
 // 时间转化格式
@@ -68,16 +48,41 @@ function checkLogin() {
 	}
 }
 
-function test() {
-	alert("sdfs")
+// 检测是否是对应的角色使用的页面
+function checkRole(userRole) {
+	var role = localStorage.getItem("role");
+	if (userRole != role) {
+		// alert("当前的登录的角色没有权限使用这个界面")
+		if(role == 0) {
+			window.location.href = "http://127.0.0.1:5500/html/home.html";
+		}
+		if(role == 1) {
+			window.location.href = "http://127.0.0.1:5500/html/service-chat.html";
+		}
+		if(role == 2) {
+			window.location.href = "http://127.0.0.1:5500/html/shopkeeper.html";
+		}
+		if(role == 3) {
+			window.location.href = "http://127.0.0.1:5500/html/admin.html";
+		}
+	}
 }
 
-function openPage() {
+// 退出
+function logout() {
+	// alert("退出")
+	var account = localStorage.getItem("account");
+	checkLogin();
+
+	var logout = "http://localhost:8080/user/logout?account=" + account;
+	$.post(logout,  function (result) {
+		// 退出成功
+		if (result.code == 0) {
+			localStorage.clear();
+			alert("退出成功")
+		}
+		// alert(result.msg);		
+	});
 	
 }
 
-// 页面跳转
-// 用户a->首页
-function userHome() {
-	window.location.href = "home.html";
-}

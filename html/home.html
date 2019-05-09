@@ -7,6 +7,7 @@
     <link href="../css/im_index/ly/main.css" type="text/css" rel="stylesheet">
     <link href="../css/framework/layui.css" type="text/css" rel="stylesheet">
     <link href="../css/im_index/home.css" type="text/css" rel="stylesheet">
+    <!-- <link href="../css/framework/bootstrap-theme.css" type="text/css" rel="stylesheet"> -->
 
 </head>
 
@@ -21,7 +22,7 @@
                             <a href="../html/home.html" class="active" style="color:#22d7c6">首页</a>
                            </li>
                         <li class="layui-nav-item message">
-                            <a href="../html/chat.html">消息<span class="layui-badge"></span></a>
+                            <a href="../html/chat.html">消息</a>
                         </li>
                         <li class="layui-nav-item person; width:auto;">
                             <a href="../html/person.html">
@@ -31,7 +32,7 @@
                                 &nbsp;&nbsp;<img  :src="avatarUrl" class="layui-nav-img"></a>
                         </li>
                         <li class="layui-nav-item">
-                            <a href="../html/home.html" class="active">退出</a>
+                                <a href="" class="active" onclick="logout()">退出</a>
                         </li>
                 </ul>
 
@@ -46,8 +47,6 @@
                 <span style="font-size: 20px">客服列表</span>
                 <hr class="layui-bg-green">
                 <div class="layui-col-md4 service" v-for="service in services">
-                    <!-- target="_blank" -->
-                    <!-- <button  @click="openChat($event, service)">===</button> -->
                     <a class="service-a" @click="openChat($event, service)" target="_blank">
 
                         &nbsp;&nbsp;
@@ -72,6 +71,7 @@
 
     </div>
     </div>
+
     </div>
 
 
@@ -79,9 +79,11 @@
     <script src="../js/framework/layui.js"></script>
     <script src="../js/framework/jquery-3.2.1.min.js"></script>
     <script src="../js/im_index/commons.js"></script>
+    <script src="../js/framework/bootstrap.min.js"></script>
 
     <script>
         
+        checkRole(0)
         checkLogin()
 
         // data loading...
@@ -92,9 +94,11 @@
             var aid = localStorage.getItem("aid");
             var role = localStorage.getItem("role");
 
-            getServiceList();
+            // 个人信息初始化
+            topinfo.nickname = localStorage.getItem("nickname");
+            topinfo.avatarUrl = localStorage.getItem("avatarUrl");
 
-            // 验证是否登录 xxx
+            getServiceList();
 
             // 获取客服列表
             function getServiceList() {
@@ -119,13 +123,14 @@
 
         });
 
+        
 
         // 头条个人栏
-        var top = new Vue({
+        var topinfo = new Vue({
             el: '#top',
             data: {
-                nickname: "ighiuhouhoiz",
-                avatarUrl: "../img/u.JPG"
+                nickname: "",
+                avatarUrl: "",
             },
             methods: {
                 openChat: function (event, user) {
@@ -176,12 +181,6 @@
             },
             methods: {
                 openChat: function (event, user) {
-                    s = sessionStorage.getItem("tokenUid");
-
-                    console.log(s)
-                    console.log(user.serviceId)
-
-                    // window.location.href = "im.html";
                     window.location.href = "chat.html?serviceId=" + user.serviceId;
 
                 },

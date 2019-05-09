@@ -7,6 +7,7 @@
     <link href="../css/im_index/ly/main.css" type="text/css" rel="stylesheet">
     <link href="../css/im_index/ly/prop-mall.css" type="text/css" rel="stylesheet">
     <link href="../css/framework/layui.css" type="text/css" rel="stylesheet">
+    <!-- <link href="../css/framework/bootstrap-theme.css" type="text/css" rel="stylesheet"> -->
 
 
 
@@ -20,20 +21,20 @@
                 <ul class="layui-nav">
                     <div id="top" class="top-in">
                         <li class="layui-nav-item home">
-                            <a href="../html/service-home.html" class="active">首页</a>
+                            <a href="../html/service-home.html" class="active">客服 - 首页</a>
                         </li>
                         <li class="layui-nav-item message">
-                            <a href="../html/service-chat.html" style="color:#22d7c6">消息<span class="layui-badge">9</span></a>
+                            <a href="../html/service-chat.html" style="color:#22d7c6">消息 </a>
                         </li>
                         <li class="layui-nav-item person; width:auto;">
                             <a href="../html/service-person.html">
                                 <span>
                                     {{nickname}}
                                 </span>
-                                &nbsp;&nbsp;<img  :src="avatarUrl" class="layui-nav-img"></a>
+                                &nbsp;&nbsp;<img :src="avatarUrl" class="layui-nav-img"></a>
                         </li>
                         <li class="layui-nav-item">
-                            <a href="../html/home.html" class="active">退出</a>
+                                <a href="" class="active" onclick="logout()">退出</a>
                         </li>
                 </ul>
 
@@ -68,7 +69,7 @@
                         <div id="chat-record" class="chat-record  ">
                             <div id="chatmain" class="chat-left " style="display: none ; ">
                                 <div class="article">
-                                    <span> {{userName}} </span>
+                                    <span style="color:red"> {{userName}} </span>
                                     <span> {{status}} </span>
                                 </div>
                                 <div id="chat" class="chat-message" style=" ">
@@ -97,29 +98,59 @@
                 </div>
             </div>
         </div>
-    </div>
 
+
+
+
+    </div>
+        <!-- 退出模态框 -->
+        <!-- Modal -->
+        <!-- <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                    </div>
+                    <div class="modal-body">
+                    ...
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+                </div>
+            </div> -->
+
+
+            
     <script src="../js/framework/vue.js"></script>
     <script src="../js/framework/layui.js"></script>
     <script src="../js/framework/jquery-3.2.1.min.js"></script>
     <script src="../js/framework/stomp.min.js"></script>
     <script src="../js/framework/sockjs.min.js"></script>
     <script src="../js/im_index/commons.js"></script>
+    <script src="../js/framework/bootstrap.min.js"></script>
 
 
 
     <script>
-        
-        
+        checkRole(1)
         checkLogin()
 
-        var aid = 19;
+
+        var aid = localStorage.getItem("aid");
         var account = localStorage.getItem("account");
         var role = localStorage.getItem("role");
         var serviceId = GetQueryString("serviceId");
         var userAvatarUrl = localStorage.getItem("avatarUrl");
 
         $(function () {
+
+            // 个人信息初始化
+            topinfo.nickname = localStorage.getItem("nickname");
+            topinfo.avatarUrl = localStorage.getItem("avatarUrl");
 
             serviceList(aid)
 
@@ -155,17 +186,17 @@
             }
 
         });
-        
+
         // 头条个人栏
-        var top = new Vue({
+        var topinfo = new Vue({
             el: '#top',
             data: {
-                nickname: "ighiuhouhoiz",
-                avatarUrl: "../img/a.JPG"
+                nickname: "",
+                avatarUrl: ""
             },
             methods: {
                 openChat: function (event, user) {
-                  
+
                 },
             },
         });
@@ -213,7 +244,19 @@
             },
             methods: {
 
+                // 获取对方在线状态
+                getStatus: function (userId) {
+                    var upUserinfo = "http://localhost:8080/user/getStatus?receviId=" + userId;
+                    $.get(upUserinfo, {
+                    }, function (result) {
+                        console.log(result)
+                        chatmain.status = result.msg;
+                    });
+
+                },
+
                 initWebSocket: function (user) {
+
                     // 窗口数据初始化
                     this.userName = user.userName;
                     this.shop = user.shop;
@@ -222,6 +265,10 @@
                     this.ulid = user.ulid;
                     this.sendId = aid;
 
+                    // 获取对方在线状态
+                    chatmain.getStatus(this.userId);
+
+                    // 打开消息聊天WebSocket
                     this.webSocket = new WebSocket('ws://localhost:8080/chat/' + this.sendId + '/' + this
                         .ulid);
                     this.webSocket.onopen = function (event) {
@@ -238,13 +285,16 @@
                         console.log('WebSocket收到消息：%c' + event, 'color:green');
                         var message = JSON.parse(event.data)
                         console.log(message)
-                        var date = new Date();
+                        
+                        // 计算 离线消息 需要标志的开始
+                        var offmFlag = message.length - user.count;
+
                         if (message.length != null) {
                             // console.log(message.length)
                             var c = 0;
                             message.forEach(m => {
                                 c++;
-                                if (c == 21) {
+                                if (c == offmFlag + 1) {
                                     $("#im-list").append('<hr>');
                                     $("#im-list").append('未读消息');
                                 }
@@ -294,8 +344,8 @@
                             $("#im-list").append(' <li class=" item-time"><span class=" time">' +
                                 getMyDate(m.sendTime) + '</span></li> <br>  ');
                         }
-                        $("#chat").scrollIntoView();
-                        $("#chat").scrollTop = $("#chat").scrollHeight;
+                        // $("#chat").scrollIntoView();
+                        // $("#chat").scrollTop = $("#chat").scrollHeight;
                     };
 
 

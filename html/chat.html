@@ -7,9 +7,6 @@
     <link href="../css/im_index/ly/main.css" type="text/css" rel="stylesheet">
     <link href="../css/im_index/ly/prop-mall.css" type="text/css" rel="stylesheet">
     <link href="../css/framework/layui.css" type="text/css" rel="stylesheet">
-
-
-
 </head>
 
 <body>
@@ -23,7 +20,7 @@
                             <a href="../html/home.html" class="active">首页</a>
                         </li>
                         <li class="layui-nav-item message">
-                            <a href="../html/chat.html" style="color:#22d7c6">消息<span class="layui-badge">9</span></a>
+                            <a href="../html/chat.html" style="color:#22d7c6">消息</a>
                         </li>
                         <li class="layui-nav-item person; width:auto;">
                             <a href="../html/person.html">
@@ -33,7 +30,7 @@
                                 &nbsp;&nbsp;<img :src="avatarUrl" class="layui-nav-img"></a>
                         </li>
                         <li class="layui-nav-item">
-                            <a href="../html/home.html" class="active">退出</a>
+                            <a href="" class="active" onclick="logout()">退出</a>
                         </li>
                 </ul>
 
@@ -45,13 +42,6 @@
                 <div class="chat-container page-container">
                     <div class="chat-wrap">
                         <div>
-                            <!-- <div class="data-tips" style="display: none;">
-                                <div class="page-loading">
-                                    <div class="spinner"><span class="loader-round"></span>
-                                        <p>正在加载中...</p>
-                                    </div>
-                                </div>
-                            </div> -->
                             <div id="chat-user" class="chat-user">
                                 <div class="article">30天内联系人</div>
 
@@ -66,31 +56,21 @@
                                             <div class="text">
                                                 <div class="title"><span class="time">{{user.updatedTime}}</span>
                                                     <span class="name"> {{user.serviceName}} </span>
-                                                    <span class="name" style="font-size:12.5px;color:gray">{{user.shop
-                                                        }}</span>
+                                                    <span class="name" style="font-size:12.5px;color:gray">
+                                                        {{user.shop}}</span>
                                                 </div>
                                                 <span class="notice-badge">{{ user.count }}</span>
                                             </div>
                                         </li>
                                     </ul>
-
-
-
-
                                 </div>
                             </div>
                         </div>
-
-
-
                         <div id="chat-record" class="chat-record  ">
-                            <!---->
-
-
 
                             <div id="chatmain" class="chat-left " style="display: none ; ">
                                 <div class="article">
-                                    <span> {{serviceName}} </span>
+                                    <span style="color:red"> {{serviceName}} </span>
                                     <span> {{status}} </span>
                                 </div>
                                 <div class="chat-position-bar" style=" ">
@@ -103,12 +83,10 @@
 
                                     </ul>
                                 </div>
+
+
+
                                 <div class="chat-im chat-editor" style="">
-
-
-                                    <!-- <div class="control  chat-controls" style="height: 30;">
-                                        <a href="javascript:;" class="btn-emotion"><span>表情</span></a>
-                                    </div> -->
 
                                     <div style="width:100%;height:  100;">
                                         <textarea id="sendText" style="line-height: 1;width: 100%;height: 100%; resize: none;
@@ -118,9 +96,6 @@
                                         <button class="layui-btn layui-btn-sm" style=" float:right;"
                                             @click="webSocketSendMessage()">发送</button>
                                     </div>
-
-
-
 
 
                                 </div>
@@ -133,6 +108,9 @@
                     </div>
                 </div>
             </div>
+
+
+
         </div>
     </div>
 
@@ -142,13 +120,14 @@
     <script src="../js/framework/stomp.min.js"></script>
     <script src="../js/framework/sockjs.min.js"></script>
     <script src="../js/im_index/commons.js"></script>
+    <script src="../js/framework/bootstrap.min.js"></script>
 
 
 
     <script>
-        
+        checkRole(0)
         checkLogin()
-        
+
         var aid = localStorage.getItem("aid");
         var account = localStorage.getItem("account");
         var role = localStorage.getItem("role");
@@ -157,15 +136,20 @@
 
         $(function () {
 
+            // 个人信息初始化
+            topinfo.nickname = localStorage.getItem("nickname");
+            topinfo.avatarUrl = localStorage.getItem("avatarUrl");
+
+
             // 从消息过来的
             if (serviceId == null) {
-                console.log(273)
+                console.log("消息过来 " + 273)
                 serviceList(aid)
 
             }
             // 从首页选择客服过来的
             else {
-                console.log(276)
+                console.log("首页选择客服过来 " + 276)
                 newService(serviceId, aid)
                 // 跳转过来的 窗口初始化
             }
@@ -197,6 +181,15 @@
 
 
             }
+            // 初始化  从跳转过来的打开新聊天窗口   
+            function jumpInit() {
+                $("#tips").css("display", "none")
+                $("#chatmain").css("display", "")
+                // chatmain.init(chatlist.userList[0]);
+                // chatmain.webSocketClose();
+                chatmain.initWebSocket(chatlist.userList[0]);
+            }
+
 
             // 获取聊天列表
             // 从消息过来的
@@ -207,6 +200,7 @@
                     type: 'get',
                     contentType: 'application/json; charset=UTF-8',
                     success: function (userList) {
+                        console.log(userList)
                         userList.data.forEach(e => {
                             e.updatedTime = getMyDateMD(e.updatedTime);
                         });
@@ -220,27 +214,20 @@
 
             }
 
-            // 初始化  从跳转过来的打开新聊天窗口   
-            function jumpInit() {
-                $("#tips").css("display", "none")
-                $("#chatmain").css("display", "")
-                // chatmain.init(chatlist.userList[0]);
-                // chatmain.webSocketClose();
-                chatmain.initWebSocket(chatlist.userList[0]);
-            }
+
 
         });
 
         // 头条个人栏
-        var top = new Vue({
+        var topinfo = new Vue({
             el: '#top',
             data: {
-                nickname: "ighiuhouhoiz",
-                avatarUrl: "../img/a.JPG"
+                nickname: "",
+                avatarUrl: ""
             },
             methods: {
                 openChat: function (event, user) {
-                  
+
                 },
             },
         });
@@ -288,12 +275,15 @@
             }
         });
 
+
+
+        
         // 聊天窗口
         var chatmain = new Vue({
             el: '#chatmain',
             data: {
                 serviceName: "",
-                status: "在线",
+                status: "",
                 shop: "",
                 sendText: "",
                 serviceId: "",
@@ -305,6 +295,17 @@
             },
             methods: {
 
+                // 获取对方在线状态
+                getStatus: function (serviceId) {
+                    var upUserinfo = "http://localhost:8080/user/getStatus?receviId=" + serviceId;
+                    $.get(upUserinfo, {
+                    }, function (result) {
+                        console.log(result)
+                        chatmain.status = result.msg;
+                    });
+
+                },
+
                 initWebSocket: function (user) {
                     // 窗口数据初始化
                     this.serviceName = user.serviceName;
@@ -315,11 +316,18 @@
                     this.ulid = user.ulid;
                     this.sendId = aid;
 
+                    // 获取对方在线状态
+                    chatmain.getStatus(this.serviceId);
+
+                    // 打开消息聊天WebSocket
                     this.webSocket = new WebSocket('ws://localhost:8080/chat/' + this.sendId + '/' + this
                         .ulid);
                     this.webSocket.onopen = function (event) {
                         console.log('WebSocket打开连接');
+
                         console.log('初始消息：%c' + event.data, 'color:green');
+                        console.log(event);
+                        console.log("=======");
 
                     };
 
@@ -331,14 +339,17 @@
                         console.log('WebSocket收到消息：%c' + event, 'color:green');
                         var message = JSON.parse(event.data)
                         console.log(message)
-                        var date = new Date();
+                        
+                        // 计算 离线消息 需要标志的开始
+                        var offmFlag = message.length - user.count;
+
                         if (message.length != null) {
                             // console.log(message.length)
                             var c = 0;
                             message.forEach(m => {
                                 c++;
-                                if (c == 21) {
-                                    $("#im-list").append('<hr>');
+                                if (c == offmFlag + 1) {
+                                    $("#im-list").append('<hr style="font-size:5px">');
                                     $("#im-list").append('未读消息');
                                 }
                                 // console.log(chatmain.serviceId + " " + aid)
@@ -371,7 +382,7 @@
                                     getMyDate(m.sendTime) + '</span></li> <br>  ');
                             });
                         } else {
-                            console.log(message)
+                            // console.log(message)
                             var m = message;
                             if (m.sendId != aid) {
                                 $("#im-list").append(

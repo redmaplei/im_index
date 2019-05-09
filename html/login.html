@@ -133,15 +133,20 @@
                 // 登录
                 login: function () {
 
+                    var account = localStorage.getItem("account");
+                    if (account != null) {
+                        alert("已经登录有账号，请先退出!")
+                        window.location.href = "home.html";
+                    }
+
                     if (loginvue.account == "" || loginvue.password == "") {
                         loginvue.tip = "请输入完整!";
                         return;
                     }
+                    
                     var urlread = "http://localhost:8080/user/login?account=" +
                         loginvue.account + "&password=" +
                         loginvue.password;
-
-    // localStorage.clear();
     
                     $.ajax({
                         url: urlread,
@@ -166,6 +171,7 @@
                                 localStorage.setItem("nickname", rel.data.nickname);
                                 // 0是用户
                                 if (rel.data.role == 0) {
+                                    console.log(rel.data)
                                     window.location.href = "home.html";
                                 }
                                 // 1是客服

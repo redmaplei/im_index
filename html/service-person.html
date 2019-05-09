@@ -7,8 +7,8 @@
     <link href="../css/im_index/ly/main.css" type="text/css" rel="stylesheet">
     <link href="../css/framework/layui.css" type="text/css" rel="stylesheet">
     <link href="../css/im_index/person.css" type="text/css" rel="stylesheet">
+    <!-- <link href="../css/framework/bootstrap-theme.css" type="text/css" rel="stylesheet"> -->
 
-    <script src="../js/framework/layui.js"></script>
 </head>
 
 <body>
@@ -19,20 +19,20 @@
                 <ul class="layui-nav">
                     <div id="top" class="top-in">
                         <li class="layui-nav-item home">
-                            <a href="../html/service-home.html" class="active">首页</a>
+                            <a href="../html/service-home.html" class="active">客服 - 首页</a>
                         </li>
                         <li class="layui-nav-item message">
-                            <a href="../html/service-chat.html">消息<span class="layui-badge">9</span></a>
+                            <a href="../html/service-chat.html">消息 </a>
                         </li>
                         <li class="layui-nav-item person; width:auto;">
                             <a href="../html/service-person.html" style="color:#22d7c6">
                                 <span>
                                     {{nickname}}
                                 </span>
-                                &nbsp;&nbsp;<img  :src="avatarUrl" class="layui-nav-img"></a>
+                                &nbsp;&nbsp;<img :src="avatarUrl" class="layui-nav-img"></a>
                         </li>
                         <li class="layui-nav-item">
-                            <a href="../html/home.html" class="active">退出</a>
+                                <a href="" class="active" onclick="logout()">退出</a>
                         </li>
                     </div>
                 </ul>
@@ -46,7 +46,7 @@
                 <hr class="layui-bg-green">
                 <br>
                 <br>
-                <form class="layui-form" action="">
+                <div class="layui-form" action="">
 
                     <div class="layui-form-item">
                         <label class="layui-form-label">手机号码</label>
@@ -58,36 +58,50 @@
 
                     <div class="layui-form-item">
                         <div class="layui-input-block">
-                            <button class="layui-btn" lay-submit lay-filter="formDemo" @click="upServiceinfo(nickname)" >立即提交</button>
+                            <button class="layui-btn" lay-submit lay-filter="formDemo"
+                                @click="upServiceinfo()">立即提交</button>
                         </div>
                     </div>
-                </form>
+                    
+                    <label>{{tip}}</label>
+                    
+                </div>
             </div>
         </div>
 
     </div>
+
     </div>
 
     <script src="../js/framework/vue.js"></script>
-    <script src="../js/framework/layui.js"></script>
     <script src="../js/framework/jquery-3.2.1.min.js"></script>
     <script src="../js/im_index/commons.js"></script>
+    <script src="../js/framework/layui.js"></script>
+    <script src="../js/framework/bootstrap.min.js"></script>
 
     <script>
-
-        
+        checkRole(1)
         checkLogin()
+        
+        var aid = localStorage.getItem("aid");
+        
+        $(function () {
+            // 个人信息初始化
+            topinfo.nickname = localStorage.getItem("nickname");
+            topinfo.avatarUrl = localStorage.getItem("avatarUrl");
+        });
+
 
         // 头条个人栏
-        var top = new Vue({
+        var topinfo = new Vue({
             el: '#top',
             data: {
-                nickname: "ighiuhouhoiz",
-                avatarUrl: "../img/a.JPG"
+                nickname: "",
+                avatarUrl: ""
             },
             methods: {
                 openChat: function (event, user) {
-                  
+
                 },
             },
         });
@@ -95,23 +109,28 @@
         var info = new Vue({
             el: '#service-list',
             data: {
-                phone: "aaa"
+                phone: "",
+                tip:""
             },
             methods: {
                 upServiceinfo: function (event, user) {
-                    var upServiceinfo = "http://localhost:8080/user/upServiceinfo";
-                    $.post(upServiceinfo, {
-                        "uid" : aid,           
-                        "phone" : this.phone
-                    },   function (result) {
-                        alert(result.msg);		
+                    if (info.phone == "") {
+                        info.tip = "请输入完整!";
+                        return;
+                    }
+                    if(isNaN(info.phone)) {
+                        info.tip = "输入的不是数字!";
+                        return;
+                    }
+                    var upServiceinfo = "http://localhost:8080/user/upServiceinfo?aid=" + aid + "&phone=" +  info.phone;
+                    $.get(upServiceinfo,  function (result) {
+                        info.tip = result.msg;
                     });
 
                 }
 
             }
         });
-
     </script>
 
 </body>

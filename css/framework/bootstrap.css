@@ -1961,7 +1961,7 @@ pre code {
     width: 41.66666667%;
   }
   .col-md-4 {
-
+    width: 33.33333333%;
   }
   .col-md-3 {
     width: 25%;
@@ -5914,7 +5914,6 @@ button.close {
   -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
           box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
 }
-
 .modal-backdrop {
   position: fixed;
   top: 0;

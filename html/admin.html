@@ -5,6 +5,7 @@
         <link href="../css/im_index/ly/main.css" type="text/css" rel="stylesheet">
         <link href="../css/framework/layui.css" type="text/css" rel="stylesheet">
         <link href="../css/im_index/shopkeeper.css" type="text/css" rel="stylesheet">
+        <!-- <link href="../css/framework/bootstrap-theme.css" type="text/css" rel="stylesheet"> -->
 
     </head>
     <body>
@@ -20,8 +21,14 @@
                             <li class="layui-nav-item home" >
                                     <a href="../html/admin.html" class="active"  style="color:#22d7c6">首页</a>
                             </li>
+
                             <li class="layui-nav-item">
-                                    <a href="" class="active">退出</a>
+                                    <a href="" class="active">管理员</a>
+                            </li>
+
+
+                            <li class="layui-nav-item">
+                                    <a href="" class="active" onclick="logout()">退出</a>
                             </li>
                                     
                     </ul>
@@ -37,7 +44,7 @@
                         <hr class="layui-bg-green">
                         <br>
                         <br>
-                        <form class="layui-form" action="">
+                        <div class="layui-form" action="">
                             <div class="layui-form-item">
                                     <label class="layui-form-label">昵称</label>
                                     <div class="layui-input-block">
@@ -76,8 +83,9 @@
                                 </div>
                             </div>
 
+                            <label>{{tip}}</label>
 
-                        </form>
+                        </div>
                         
                     </div>
                 </div>
@@ -88,7 +96,7 @@
                             <hr class="layui-bg-green">
                             <br>
                             <br>
-                            <form class="layui-form" action="">
+                            <div class="layui-form" >
                                 <div class="layui-form-item">
                                         <label class="layui-form-label">店名</label>
                                         <div class="layui-input-block">
@@ -106,27 +114,29 @@
                                 </div>
             
                                 <div class="layui-form-item">
-                                    <label class="layui-form-label">店主</label>
+                                    <label class="layui-form-label">店主id</label>
                                     <div class="layui-input-block">
-                                        <input type="text" name="title" required lay-verify="required" placeholder="请输入店主"
+                                        <input type="text" name="title" required lay-verify="required" placeholder="请输入店主id"
                                             autocomplete="off" class="layui-input" v-model="shopId">
                                     </div>
                                 </div>
             
                                 <div class="layui-form-item">
                                     <div class="layui-input-block">
-                                        <button class="layui-btn" lay-submit lay-filter="formDemo" @click="addhop()" >立即提交</button>
+                                        <button class="layui-btn" lay-submit  @click="addhop()" >立即提交</button>
                                     </div>
                                 </div>
     
+                                <label>{{tip}}</label>
     
-                            </form>
+                            </div>
                             
                         </div>
                     </div>
 
                 </div>
             </div>
+
         </div>
         
     
@@ -134,14 +144,16 @@
         <script src="../js/framework/layui.js"></script>
         <script src="../js/framework/jquery-3.2.1.min.js"></script>
         <script src="../js/im_index/commons.js"></script>
+        <script src="../js/framework/bootstrap.min.js"></script>
  
  
  
         <script> 
 
+        checkRole(3)
         checkLogin()
 
-        var register = new Vue({
+        var reginfo = new Vue({
             el: '#service-list',
             data: {
                 nickname: "",
@@ -154,19 +166,28 @@
 
                 register: function () {
                     console.log(this.nickname)
-                    var register = "http://localhost:8080/user/register"
-                    $.post(register, {
+                    if (reginfo.nickname == "" || reginfo.account == "" || reginfo.password == "" || reginfo.role == "") {
+                        reginfo.tip = "请输入完整!";
+                        return;
+                    }
+
+                    if(isNaN(reginfo.role)) {
+                        reginfo.tip = "角色应该为数字!";
+                        return
+                    }
+
+                    var registerurl = "http://localhost:8080/user/register"
+                    $.post(registerurl, {
                         "nickName" : this.nickname,      
                         "account" : this.account,      
                         "password" : this.password,      
                         "role" : this.role 
                     }, function (result) {
                         if(result.code == 0) {
-                            alert("注册成功")
+                            reginfo.tip = "注册成功";
+                            return;
                         }
-                        else {
-                            alert(result.msg)
-                        }			
+                        reginfo.tip = result.msg;	
                     });
 
                 }
@@ -178,23 +199,36 @@
             data: {
                 shop: "",
                 shopInfo: "",
-                shopId: ""
+                shopId: "",
+                tip:""
             },
             methods: {
 
                 addhop: function () {
-                    var addhop = "http://localhost:8080/user/shop"
-                    $.post(addhop, {
+
+                    if (shop.shop == "" || shop.shopInfo == "" || shop.shopId == "") {
+                        shop.tip = "请输入完整!";
+                        return;
+                    }
+
+                    if(isNaN(this.shopId)) {
+                        shop.tip = "店主id应该为数字!";
+                        return
+                    }
+
+                    var addshop = "http://localhost:8080/user/shop"
+                    $.post(addshop, {
                         "shop" : this.shop,      
                         "shopInfo" : this.shopInfo,      
                         "shopId" : this.shopId
                     }, function (result) {
+                        console.log(result)
                         if(result.code == 0) {
-                            alert("增加成功")
+                            shop.tip = "增加成功";
+                            return;
                         }
-                        else {
-                            alert(result.msg)
-                        }			
+                        shop.tip = result.msg;
+                        
                     });
 
                 }

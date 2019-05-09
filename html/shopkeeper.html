@@ -1,97 +1,107 @@
-<html class="standard"><head>
-        <meta charset="utf-8">
-        <title>店主操作客服</title>
-        <link href="../css/im_index/ly/c.css" type="text/css" rel="stylesheet">
-        <link href="../css/im_index/ly/main.css" type="text/css" rel="stylesheet">
-        <link href="../css/framework/layui.css" type="text/css" rel="stylesheet">
-        <link href="../css/im_index/shopkeeper.css" type="text/css" rel="stylesheet">
+<html class="standard">
 
-    </head>
-    <body>
+<head>
+    <meta charset="utf-8">
+    <title>店主操作客服</title>
+    <link href="../css/im_index/ly/c.css" type="text/css" rel="stylesheet">
+    <link href="../css/im_index/ly/main.css" type="text/css" rel="stylesheet">
+    <link href="../css/framework/layui.css" type="text/css" rel="stylesheet">
+    <link href="../css/im_index/shopkeeper.css" type="text/css" rel="stylesheet">
+    <!-- <link href="../css/framework/bootstrap-theme.css" type="text/css" rel="stylesheet"> -->
 
-        <div id="wrap">
-            <div id="header">
-                <div class="top">
-                    <ul class="layui-nav">
-                        <div id="top" class="top-in">
-                                <li class="layui-nav-item home" >
-                                        <a href="../html/home.html" class="active"  style="color:#22d7c6">首页</a>
-                                    </li>
-                                    <li class="layui-nav-item person; width:auto;">
-                                            <span>
-                                                {{nickname}}
-                                            </span>
-                                    </li>
-                                    <li class="layui-nav-item">
-                                        <a href="../html/home.html" class="active">退出</a>
-                                    </li>
-                    </ul>
-                   </div>
-                </div> 
-                    <div id="service-list">     
-                        <div id="sadmin" class="layui-row layui-col-space5  " >
-                            <span style="font-size: 20px">客服管理</span>
-                            <hr class="layui-bg-green">
-                            <div class="add">
-                                <div class="add_input">
-                                    <span class="service_tip">客服名字</span>
-                                    <input class="addInput"  v-model="serviceName">
-                                    <button class="layui-btn addBtn" @click="add()">添加</button>
-                                </div>
-                                <br>
-                                <br>
-                                <br>
-                                <div class="tip_div">
-                                        <p class="tip_p" text- align:center>{{tip}}</p> 
-                                </div>
-                            </div>
-                            <table class="layui-table">
-                                <colgroup>
-                                  <col width="150">
-                                  <col width="200">
-                                  <col>
-                                </colgroup>
+</head>
 
-                                <thead>
-                                  <tr>
-                                    <th style="width:90%">客服名字</th>
-                                    <th>操作</th>
-                                  </tr> 
-                                </thead>
-                                <tbody v-for="serviceName in serviceNames">
-                                  <tr>
-                                    <td>{{serviceName}}</td>
-                                    <td><button class="layui-btn layui-btn-sm" @click="remove(serviceName)" >移除</button></td>
-                                  </tr>
+<body>
 
-                                </tbody>
-                              </table>
-                            
-
-
-
-                          </div>
-                    </div>
-
-                </div>
+    <div id="wrap">
+        <div id="header">
+            <div class="top">
+                <ul class="layui-nav">
+                    <div id="top" class="top-in">
+                        <li class="layui-nav-item home">
+                            <a href="../html/home.html" class="active" style="color:#22d7c6">首页</a>
+                        </li>
+                        <li class="layui-nav-item person; width:auto;">
+                            <span>
+                                {{nickname}}
+                            </span>
+                        </li>
+                        <li class="layui-nav-item">
+                                <a href="" class="active" onclick="logout()">退出</a>
+                        </li>
+                </ul>
             </div>
         </div>
-        
-    
-        <script src="../js/framework/vue.js"></script>
-        <script src="../js/framework/layui.js"></script>
-        <script src="../js/framework/jquery-3.2.1.min.js"></script>
-        <script src="../js/im_index/commons.js"></script>
- 
- 
- 
-        <script> 
+        <div id="service-list">
+            <div id="sadmin" class="layui-row layui-col-space5  ">
+                <span style="font-size: 20px">客服管理</span>
+                <hr class="layui-bg-green">
+                <div class="add">
+                    <div class="add_input">
+                        <span class="service_tip">客服名字</span>
+                        <input class="addInput" v-model="serviceName">
+                        <button class="layui-btn addBtn" @click="add()">添加</button>
+                    </div>
+                    <br>
+                    <br>
+                    <br>
+                    <div class="tip_div">
+                        <p class="tip_p" text- align:center>{{tip}}</p>
+                    </div>
+                </div>
+                <table class="layui-table">
+                    <colgroup>
+                        <col width="150">
+                        <col width="200">
+                        <col>
+                    </colgroup>
 
+                    <thead>
+                        <tr>
+                            <th style="width:90%">客服名字</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody v-for="serviceName in serviceNames">
+                        <tr>
+                            <td>{{serviceName}}</td>
+                            <td><button class="layui-btn layui-btn-sm" @click="remove(serviceName)">移除</button></td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+
+
+
+            </div>
+        </div>
+
+    </div>
+    </div>
+
+    </div>
+
+
+    <script src="../js/framework/vue.js"></script>
+    <script src="../js/framework/layui.js"></script>
+    <script src="../js/framework/jquery-3.2.1.min.js"></script>
+    <script src="../js/im_index/commons.js"></script>
+    <script src="../js/framework/bootstrap.min.js"></script>
+
+
+
+    <script>
+        checkRole(2)
         checkLogin()
-        
+
+
         var aid = localStorage.getItem("aid");
 
         $(function () {
+            // 个人信息初始化
+            topinfo.nickname = localStorage.getItem("nickname");
+            topinfo.avatarUrl = localStorage.getItem("avatarUrl");
 
             // 获取客服列表
             getServiceNames(aid)
@@ -100,22 +110,22 @@
 
         function getServiceNames(aid) {
             var getServiceNames = "http://localhost:8080/service/serviceNames?aid=" + aid;
-                    $.get(getServiceNames,  function (result) {
-                        console.log(result)
-                        sadmin.serviceNames = result.data;
-                    });
+            $.get(getServiceNames, function (result) {
+                console.log(result)
+                sadmin.serviceNames = result.data;
+            });
         }
 
         // 头条个人栏
-        var top = new Vue({
+        var topinfo = new Vue({
             el: '#top',
             data: {
-                nickname: "ighiuhouhoiz",
+                nickname: "",
                 aid: ""
             },
             methods: {
                 openChat: function (event, user) {
-                  
+
                 },
             },
         });
@@ -124,47 +134,54 @@
             el: '#sadmin',
             data: {
                 serviceName: "",
-                serviceNames:[
-                "sd",
-                "sdf"
+                serviceNames: [
+                    "sd",
+                    "sdf"
                 ],
-                tip:""
+                tip: ""
             },
             methods: {
 
                 add: function () {
                     console.log(aid + "&&serviceName=" + this.serviceName)
-                    var add = "http://localhost:8080/user/addService?shopId=" + aid + "&&serviceName=" + this.serviceName;
-                    $.post(add,  function (result) {
+                    if (this.serviceName == "") {
+                            sadmin.tip = "请输入完整!";
+                        return;
+                    }
+                    var add = "http://localhost:8080/user/addService?shopId=" + aid + "&&serviceName=" +
+                        this.serviceName;
+                    $.post(add, function (result) {
                         sadmin.tip = result.msg;
-                        if(result.code == 0) {
-                            alert("增加成功")
+                        if (result.code == 0) {
+                            sadmin.tip = "增加成功";
+			                window.location.href = "shopkeeper.html";
+                        } else {
+                            sadmin.tip = result.msg;
                         }
-                        else {
-                            alert(result.msg)
-                        }			
                     });
 
                 },
 
                 remove: function (serviceName) {
-                    var remove = "http://localhost:8080/user/removeService?shopId=" + aid + "&&serviceName=" + serviceName;
-                    $.post(remove,  function (result) {
+                    console.log(aid + "&&serviceName=" + serviceName)
+                    var remove = "http://localhost:8080/user/removeService?shopId=" + aid +
+                        "&&serviceName=" + serviceName;
+                    $.post(remove, function (result) {
                         sadmin.tip = result.msg;
-                        if(result.code == 0) {
-                            alert("移除成功")
+                        if (result.code == 0) {
+                            sadmin.tip = "移除成功";
                             getServiceNames(aid)
+                        } else {
+                            sadmin.tip = result.msg;
                         }
-                        else {
-                            alert(result.msg)
-                        }			
                     });
 
-                },               
+                },
 
             }
         });
+    </script>
 
-        </script>
+</body>
 
-    </body></html>
+</html>
