@@ -21,7 +21,7 @@
                 <ul class="layui-nav">
                     <div id="top" class="top-in">
                         <li class="layui-nav-item home">
-                            <a href="../html/service-home.html" class="active">客服 - 首页</a>
+                            <a href="../html/service-home.html" class="active">{{shopName}}  客服 - 首页</a>
                         </li>
                         <li class="layui-nav-item message">
                             <a href="../html/service-chat.html" style="color:#22d7c6">消息 </a>
@@ -59,7 +59,7 @@
                                                     <span class="name"> {{user.userName}} </span>
 
                                                 </div>
-                                                <span class="notice-badge">{{ user.count }}</span>
+                                                <span class="notice-badge" v-if="user.count > 0">{{ user.count }}</span>
                                             </div>
                                         </li>
                                     </ul>
@@ -103,27 +103,6 @@
 
 
     </div>
-        <!-- 退出模态框 -->
-        <!-- Modal -->
-        <!-- <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-                    </div>
-                    <div class="modal-body">
-                    ...
-                    </div>
-                    <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                    </div>
-                </div>
-                </div>
-            </div> -->
-
-
             
     <script src="../js/framework/vue.js"></script>
     <script src="../js/framework/layui.js"></script>
@@ -151,6 +130,21 @@
             // 个人信息初始化
             topinfo.nickname = localStorage.getItem("nickname");
             topinfo.avatarUrl = localStorage.getItem("avatarUrl");
+
+            // 商店名字
+            url = "http://localhost:8080/user/getShopName?serviceName=" + topinfo.nickname;
+            $.ajax({
+                url: url,
+                type: 'get',
+                contentType: 'application/json; charset=UTF-8',
+                success: function (userList) {
+                    topinfo.shopName = userList.msg;
+                    //   return userList
+                },
+                error: function () {
+                    console.log("服务器获取失败");
+                }
+            });
 
             serviceList(aid)
 
@@ -192,7 +186,8 @@
             el: '#top',
             data: {
                 nickname: "",
-                avatarUrl: ""
+                avatarUrl: "",
+                shopName:""
             },
             methods: {
                 openChat: function (event, user) {
@@ -214,12 +209,14 @@
                     $("#chatmain").css("display", "")
 
                     $("#im-list").empty();
+
                     // 获取点击对象      
                     var el = event.currentTarget;
 
                     // chatmain.webSocketClose();
                     console.log(user)
                     chatmain.initWebSocket(user);
+                    user.count = 0;
 
                 }
 
@@ -233,14 +230,15 @@
             el: '#chatmain',
             data: {
                 userName: "",
-                status: "在线",
+                status: "",
                 sendText: "",
                 userId: "",
                 ulid: "",
                 webSocket: null,
                 sendId: "",
                 avatarUrl: "",
-                message: []
+                message: [],
+                offc:""
             },
             methods: {
 
@@ -256,13 +254,14 @@
                 },
 
                 initWebSocket: function (user) {
-
+                    console.log(user)
                     // 窗口数据初始化
                     this.userName = user.userName;
                     this.shop = user.shop;
                     this.userId = user.userId;
                     this.avatarUrl = user.avatarUrl;
                     this.ulid = user.ulid;
+                    this.offc = user.count;
                     this.sendId = aid;
 
                     // 获取对方在线状态
@@ -286,15 +285,14 @@
                         var message = JSON.parse(event.data)
                         console.log(message)
                         
-                        // 计算 离线消息 需要标志的开始
-                        var offmFlag = message.length - user.count;
+                        // 离线消息
 
                         if (message.length != null) {
                             // console.log(message.length)
                             var c = 0;
                             message.forEach(m => {
                                 c++;
-                                if (c == offmFlag + 1) {
+                                if (chatmain.offc != 0 && c == message.length +1 - chatmain.offc) {
                                     $("#im-list").append('<hr>');
                                     $("#im-list").append('未读消息');
                                 }
@@ -326,6 +324,7 @@
                             console.log(message)
                             var m = message;
                             if (m.sendId != aid) {
+                                $("#im-list").append('<label style="color:red;">新消息</label>');
                                 $("#im-list").append(
                                     '<li style="margin-bottom: -25px;"><div class="message-text"><div class="figure"><img src=" ' +
                                     chatmain.avatarUrl +

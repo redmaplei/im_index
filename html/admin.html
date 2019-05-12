@@ -135,6 +135,95 @@
                     </div>
 
                 </div>
+
+                <div style="    margin: 80px auto;
+                width: 1000px;
+                height: 600px;">
+                    <div id="acct" class="layui-row layui-col-space5  ">
+                        <span style="font-size: 20px">账号</span>
+                        <hr class="layui-bg-green">
+                        <table class="layui-table">
+                            <colgroup>
+                                <col width="150">
+                                <col width="200">
+                                <col>
+                            </colgroup>
+        
+                            <thead>
+                                <tr>
+                                    <th style="width:25%">昵称</th>
+                                    <th style="width:25%">账号</th>
+                                    <th style="width:25%">账号id</th>
+                                    <th style="width:25%">角色</th>
+                                </tr>
+                            </thead>
+
+                            <tbody v-for="account in accounts">
+                                <tr>
+                                    <td>{{account.nickName}}</td>
+                                    <td>{{account.account}}</td>
+                                    <td>{{account.aid}}</td>
+                                    <td>{{account.role}}</td>
+                                </tr>
+        
+                            </tbody>
+                        </table>
+        
+        
+        
+        
+                    </div>
+
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+
+                    <div id="shopList" class="layui-row layui-col-space5  ">
+                        <span style="font-size: 20px">商店</span>
+                        <hr class="layui-bg-green">
+                        <table class="layui-table">
+                            <colgroup>
+                                <col width="150">
+                                <col width="200">
+                                <col>
+                            </colgroup>
+        
+                            <thead>
+                                <tr>
+                                    <th style="width:25%">商店id</th>
+                                    <th style="width:25%">商店名字</th>
+                                    <th style="width:25%">商店描述</th>
+                                    <th style="width:25%">商店店主id</th>
+                                </tr>
+                            </thead>
+
+                            <tbody v-for="shop in shopList">
+                                <tr>
+                                    <td>{{shop.id}}</td>
+                                    <td>{{shop.shop}}</td>
+                                    <td>{{shop.shopInfo}}</td>
+                                    <td>{{shop.shopId}}</td>
+                                </tr>
+        
+                            </tbody>
+                        </table>
+        
+        
+        
+        
+                    </div>
+
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                </div>
+
             </div>
 
         </div>
@@ -152,6 +241,40 @@
 
         checkRole(3)
         checkLogin()
+
+        // data loading...
+        $(function () {
+
+            url = "http://localhost:8080/user/getAccount";
+            $.ajax({
+                url: url,
+                type: 'get',
+                contentType: 'application/json; charset=UTF-8',
+                success: function (userList) {
+                    acct.accounts = userList.data;
+                    //   return userList
+                },
+                error: function () {
+                    console.log("服务器获取失败");
+                }
+            });
+
+
+            url = "http://localhost:8080/user/getShop";
+            $.ajax({
+                url: url,
+                type: 'get',
+                contentType: 'application/json; charset=UTF-8',
+                success: function (userList) {
+                    shopList.shopList = userList.data;
+                    //   return userList
+                },
+                error: function () {
+                    console.log("服务器获取失败");
+                }
+            });
+        
+        });
 
         var reginfo = new Vue({
             el: '#service-list',
@@ -185,6 +308,7 @@
                     }, function (result) {
                         if(result.code == 0) {
                             reginfo.tip = "注册成功";
+			                window.location.href = "admin.html";
                             return;
                         }
                         reginfo.tip = result.msg;	
@@ -225,6 +349,7 @@
                         console.log(result)
                         if(result.code == 0) {
                             shop.tip = "增加成功";
+			                window.location.href = "admin.html";
                             return;
                         }
                         shop.tip = result.msg;
@@ -232,6 +357,29 @@
                     });
 
                 }
+            }
+        });
+
+
+        // 账号
+        var acct = new Vue({
+            el: '#acct',
+            data: {
+                accounts:[]
+            },
+            methods: {
+
+            }
+        });
+
+        // 商店
+        var shopList = new Vue({
+            el: '#shopList',
+            data: {
+                shopList:[]
+            },
+            methods: {
+
             }
         });
 

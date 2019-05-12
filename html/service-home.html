@@ -19,7 +19,7 @@
                 <ul class="layui-nav">
                     <div id="top" class="top-in">
                         <li class="layui-nav-item home">
-                            <a href="../html/service-home.html" class="active" style="color:#22d7c6">客服 - 首页</a>
+                            <a href="../html/service-home.html" class="active" style="color:#22d7c6">{{shopName}}  客服 - 首页</a>
                         </li>
                         <li class="layui-nav-item message">
                             <a href="../html/service-chat.html">消息 </a>
@@ -48,27 +48,6 @@
             <h1>点击消息查看聊天</h1>
 
         </div>
-
-        <!-- 退出模态框 -->
-        <!-- Modal -->
-        <!-- <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-                </div>
-                <div class="modal-body">
-                ...
-                </div>
-                <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-            </div>
-        </div> -->
-  
 
     </div>
     </div>
@@ -99,6 +78,21 @@
             topinfo.nickname = localStorage.getItem("nickname");
             topinfo.avatarUrl = localStorage.getItem("avatarUrl");
 
+            // 商店名字
+            url = "http://localhost:8080/user/getShopName?serviceName=" + topinfo.nickname;
+            $.ajax({
+                url: url,
+                type: 'get',
+                contentType: 'application/json; charset=UTF-8',
+                success: function (userList) {
+                    topinfo.shopName = userList.msg;
+                    //   return userList
+                },
+                error: function () {
+                    console.log("服务器获取失败");
+                }
+            });
+
             getServiceList();
 
             // 验证是否登录 xxx
@@ -127,7 +121,8 @@
             el: '#top',
             data: {
                 nickname: "",
-                avatarUrl: ""
+                avatarUrl: "",
+                shopName:""
             },
             methods: {
                 openChat: function (event, user) {

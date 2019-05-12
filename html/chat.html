@@ -59,7 +59,7 @@
                                                     <span class="name" style="font-size:12.5px;color:gray">
                                                         {{user.shop}}</span>
                                                 </div>
-                                                <span class="notice-badge">{{ user.count }}</span>
+                                                <span class="notice-badge" v-if="user.count > 0">{{ user.count }}</span>
                                             </div>
                                         </li>
                                     </ul>
@@ -264,9 +264,12 @@
                     // 获取点击对象      
                     var el = event.currentTarget;
 
+
                     // chatmain.webSocketClose();
                     console.log(user)
                     chatmain.initWebSocket(user);
+                    // 消息数量
+                    user.count = 0;
 
                 }
 
@@ -291,7 +294,8 @@
                 webSocket: null,
                 sendId: "",
                 avatarUrl: "",
-                message: []
+                message: [],
+                offc:""
             },
             methods: {
 
@@ -308,12 +312,13 @@
 
                 initWebSocket: function (user) {
                     // 窗口数据初始化
+                    console.log(user.serviceName)
                     this.serviceName = user.serviceName;
                     this.shop = user.shop;
                     this.serviceId = user.serviceId;
-                    console.log(this.serviceId + " " + aid)
                     this.avatarUrl = user.avatarUrl;
                     this.ulid = user.ulid;
+                    this.offc = user.count;
                     this.sendId = aid;
 
                     // 获取对方在线状态
@@ -339,23 +344,20 @@
                         console.log('WebSocket收到消息：%c' + event, 'color:green');
                         var message = JSON.parse(event.data)
                         console.log(message)
-                        
-                        // 计算 离线消息 需要标志的开始
-                        var offmFlag = message.length - user.count;
 
                         if (message.length != null) {
                             // console.log(message.length)
                             var c = 0;
                             message.forEach(m => {
                                 c++;
-                                if (c == offmFlag + 1) {
+                                 // 离线消息
+                                // console.log(chatmain.offc)
+                                // console.log(message.length +1-chatmain.offc)
+                                if (chatmain.offc != 0 && c == message.length +1 - chatmain.offc) {
+                                // console.log(c)
                                     $("#im-list").append('<hr style="font-size:5px">');
                                     $("#im-list").append('未读消息');
                                 }
-                                // console.log(chatmain.serviceId + " " + aid)
-                                //     console.log(m.receiveId)
-                                //     console.log(m.sendId)
-                                //     console.log(aid)
                                 if (m.sendId != aid) {
 
                                     // 左
@@ -385,6 +387,7 @@
                             // console.log(message)
                             var m = message;
                             if (m.sendId != aid) {
+                            $("#im-list").append('<label style="color:red;">新消息</label>');
                                 $("#im-list").append(
                                     '<li style="margin-bottom: -25px;"><div class="message-text"><div class="figure"><img src=" ' +
                                     chatmain.avatarUrl +
